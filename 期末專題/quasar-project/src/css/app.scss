@@ -1,0 +1,43 @@
+// app global css in SCSS form
+#front-layout {
+  overflow-x: hidden;
+  .q-header {
+    .q-layout__shadow:after {
+      box-shadow: none;
+    }
+    position: absolute;
+    padding: 0 10%;
+    .q-btn::before {
+      box-shadow: none;
+      margin-right: 0.2rem;
+    }
+  }
+}
+#front-main {
+  flex-direction: column;
+  .column {
+    background-color: $primary;
+    width: 100vw;
+    .col {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      a {
+        font-size: 1.2rem;
+        width: 10%;
+        text-decoration: none;
+        color:black;
+      }
+    }
+  }
+  #container-A {
+    height: 100vh;
+    h1 {
+      text-align: center;
+    }
+  }
+  #container-B {
+    height: 100vh;
+    text-align: center;
+  }
+}
