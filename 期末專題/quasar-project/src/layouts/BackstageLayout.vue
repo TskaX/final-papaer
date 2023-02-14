@@ -25,7 +25,7 @@
             夥伴管理
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple to="/">
+        <q-item clickable v-ripple to="/appointmentManage">
           <q-item-section avatar>
             <q-icon name="send" />
           </q-item-section>
@@ -33,7 +33,7 @@
             訂單管理
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple to="/">
+        <q-item clickable v-ripple to="/pageMessageManage">
           <q-item-section avatar>
             <q-icon name="send" />
           </q-item-section>

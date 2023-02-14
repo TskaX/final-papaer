@@ -234,3 +234,27 @@ const pagesNumber = computed(() => {
 })()
 
 </script>
+<style>
+.q-textarea .q-field__native {
+  resize: none;
+}
+.q-table tr td:nth-child(1) {
+  width: 5%;
+}
+.q-table tr td:nth-child(2) {
+  width: 10%;
+}
+.q-table tr td:nth-child(3) {
+  width: 20%;
+}
+.q-table tr td:nth-child(4) {
+  width: 20%;
+  white-space:normal;
+}
+.q-table tr td:nth-child(5) {
+  width: 20%;
+}
+.q-table tr td:nth-child(6) {
+  width: 10%;
+}
+</style>

@@ -29,7 +29,7 @@ export const getQuestions = async (req, res) => {
 
 export const getNoneQuestions = async (req, res) => {
   try {
-    const result = await questions.find({ reply: 0 })
+    const result = await questions.find({ reply: 0 }).populate('u_id', 'account')
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
@@ -38,7 +38,7 @@ export const getNoneQuestions = async (req, res) => {
 
 export const getDoneQuestions = async (req, res) => {
   try {
-    const result = await questions.find({ reply: 1 })
+    const result = await questions.find({ reply: 1 }).populate('u_id', 'account')
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })

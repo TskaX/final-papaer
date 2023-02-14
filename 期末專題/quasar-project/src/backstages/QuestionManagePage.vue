@@ -36,14 +36,14 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-            <q-form @submit="submit(props.row._id)" @reset="reset">
+            <q-form @submit="submit(props.row._id)" @reset="reset(props.row._id)">
               <div class="row">
                 <div class="col-10">
-                  <q-input type="text" v-model="form.replyContent"></q-input>
+                  <q-input type="text" v-model="props.row.replyContent" ></q-input>
                 </div>
                 <div class="col-2">
                   <q-btn type="submit" label="確認回覆"></q-btn>
-                  <q-btn type="reset" label="取消回覆" @click="props.expand = form.expand"></q-btn>
+                  <q-btn type="reset" label="取消回覆" @click="props.expand = false"></q-btn>
                 </div>
               </div>
             </q-form>
@@ -71,7 +71,7 @@
       title="已回覆"
       :rows="rows2"
       :columns="columns"
-      v-model:pagination="pagination"
+      v-model:pagination="pagination2"
       hide-pagination
       :filter="filter"
       row-key="_id"
@@ -103,24 +103,7 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-            <q-form @submit="submitEdit(props.row._id)" @reset="resetEdit">
-              <div class="row">
-                <div class="col-10" v-if="!formEdit.open">
-                  <div class="text-left">{{ props.row.replyContent }}</div>
-                </div>
-                <div class="col-10" v-else>
-                  <q-input type="text" v-model="formEdit.replyContent"></q-input>
-                </div>
-                <div class="col-2" v-if="!formEdit.open">
-                  <q-btn label="編輯回覆" @click="openReplyInput"></q-btn>
-                  <q-btn label="取消編輯" @click="props.expand = false"></q-btn>
-                </div>
-                <div class="col-2" v-else>
-                  <q-btn label="確認回覆" @click="openReplyInput"></q-btn>
-                  <q-btn label="取消回覆" @click="props.expand = false"></q-btn>
-                </div>
-              </div>
-            </q-form>
+            <div class="text-left">{{ props.row.replyContent }}</div>
           </q-td>
         </q-tr>
       </template>
@@ -133,9 +116,9 @@
       </template>
     </q-table>
     <q-pagination
-      v-model="pagination.page"
+      v-model="pagination2.page"
       color="grey-8"
-      :max="pagesNumber"
+      :max="pagesNumber2"
       size="sm"
     />
   </div>
@@ -148,18 +131,12 @@ import Swal from 'sweetalert2'
 const filter = ref('')
 const rows = reactive([])
 const rows2 = reactive([])
-const form = reactive({
-  _id: '',
-  replyContent: '',
-  reply: 1,
-  expand: false
-})
 
 const submit = async (idx) => {
   const index = rows.findIndex(el => el._id === idx)
-  form._id = rows[index]._id
+  rows[index].reply = 1
   try {
-    await apiAuth.post('/questions/replyContent/' + form._id, form)
+    await apiAuth.post('/questions/replyContent/' + rows[index]._id, { replyContent: rows[index].replyContent, reply: rows[index].reply })
     Swal.fire({
       icon: 'success',
       title: '成功',
@@ -174,23 +151,18 @@ const submit = async (idx) => {
   }
 }
 
-const reset = () => {
-  form.replyContent = ''
-  form.expand = false
-  console.log(form.expand)
-}
-
-const formEdit = reactive({
-  _id: '',
-  replyContent: '',
-  open: false
-})
-
-const openReplyInput = () => {
-  formEdit.open = true
+const reset = (idx) => {
+  const index = rows.findIndex(el => el._id === idx)
+  rows[index].replyContent = ''
 }
 
 const columns = reactive([
+  {
+    name: 'member_name',
+    label: '會員名字',
+    align: 'left',
+    field: row => row.u_id.account
+  },
   {
     name: 'title',
     label: '主旨',
@@ -220,6 +192,17 @@ const pagination = ref({
 
 const pagesNumber = computed(() => {
   return Math.ceil(rows.length / pagination.value.rowsPerPage)
+})
+
+const pagination2 = ref({
+  sortBy: 'name',
+  descending: false,
+  page: 1,
+  rowsPerPage: 5
+})
+
+const pagesNumber2 = computed(() => {
+  return Math.ceil(rows2.length / pagination2.value.rowsPerPage)
 });
 
 (async () => {
@@ -249,12 +232,16 @@ const pagesNumber = computed(() => {
   width: 5%;
 }
 .q-table tr td:nth-child(2) {
-  width: 20%;
+  width: 10%;
 }
 .q-table tr td:nth-child(3) {
   width: 20%;
 }
 .q-table tr td:nth-child(4) {
+  width: 20%;
+  white-space:normal;
+}
+.q-table tr td:nth-child(5) {
   width: 40%;
   white-space:normal;
 }

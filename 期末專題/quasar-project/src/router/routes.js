@@ -25,7 +25,9 @@ const routes = [
     children: [
       { path: '', name: 'backstage', component: () => import('../backstages/BackstagePage.vue'), meta: { title: '會員管理', backstage: true, login: true } },
       { path: '/partner', name: 'partner', component: () => import('../backstages/PartnerPage.vue'), meta: { title: '夥伴管理', backstage: true, login: true } },
-      { path: '/questionManage', name: 'questionManage', component: () => import('../backstages/QuestionManagePage.vue'), meta: { title: '意見/問題管理', backstage: true, login: true } }
+      { path: '/questionManage', name: 'questionManage', component: () => import('../backstages/QuestionManagePage.vue'), meta: { title: '意見/問題管理', backstage: true, login: true } },
+      { path: '/appointmentManage', name: 'appointmentManage', component: () => import('../backstages/AppointmentManagePage.vue'), meta: { title: '預約管理', backstage: true, login: true } },
+      { path: '/pageMessageManage', name: 'pageMessageManage', component: () => import('../backstages/PageMessageManagePage.vue'), meta: { title: '頁面訊息管理', backstage: true, login: true } }
     ]
   },
 
