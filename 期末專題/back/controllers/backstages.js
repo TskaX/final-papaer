@@ -87,9 +87,8 @@ export const addMessage = async (req, res) => {
 
 export const getMessage = async (req, res) => {
   try {
-    const result = await messages.find({ title: { $ne: '' } })
-    console.log(result)
-    // const result = await messages.find(el => el.title.length > 0 && el.content.length > 0)
+    const message = await messages.find()
+    const result = message.filter(el => el.title.length > 0)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })

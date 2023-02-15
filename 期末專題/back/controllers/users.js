@@ -1,6 +1,7 @@
 import users from '../models/users.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import appointments from '../models/appointments.js'
 
 export const register = async (req, res) => {
   try {
@@ -155,6 +156,41 @@ export const editPartner = async (req, res) => {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else if (error.name === 'CastError') {
       res.status(404).json({ success: false, message: '找不到456' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+export const getAllPartner = async (req, res) => {
+  try {
+    const result = await users.find({ partner: 1 })
+    console.log(result)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
+export const addAppointment = async (req, res) => {
+  try {
+    await appointments.create({
+      account: req.body.account,
+      name: req.body.name,
+      phone: req.body.phone,
+      email: req.body.email,
+      date: req.body.date,
+      time: req.body.time,
+      p_name: req.body.p_name,
+      place: req.body.place,
+      u_id: req.user._id
+    })
+    res.status(200).json({ success: true, message: '' })
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'MongoServerError' && error.code === 11000) {
+      res.status(400).json({ success: false, message: '帳號重複' })
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
     }
