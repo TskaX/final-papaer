@@ -33,9 +33,21 @@ const appointmentSchema = new Schema({
     type: String,
     required: [true, '缺少地點']
   },
+  a_date: {
+    type: Date,
+    default: () => Date.now() + 8 * 60 * 60 * 1000
+  },
   u_reply: {
     type: String,
     default: ''
+  },
+  u_replyStatus: {
+    type: Number,
+    default: 0
+  },
+  p_replyStatus: {
+    type: Number,
+    default: 0
   },
   p_reply: {
     type: String,

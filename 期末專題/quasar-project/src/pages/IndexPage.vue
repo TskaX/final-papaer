@@ -167,7 +167,6 @@ const rows = reactive([]);
 (async () => {
   const { data } = await apiAuth.get('/users/partner')
   rows.push(...data.result)
-  console.log(rows)
 })()
 </script>
 

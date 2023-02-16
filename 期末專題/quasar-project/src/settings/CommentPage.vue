@@ -1,80 +1,62 @@
 <template>
-  <div class="q-pa-md">
-    <q-table
-      title="Treats"
-      :rows="rows"
-      :columns="columns"
-      row-key="_id"
-    >
+  <div class="q-pa-md row items-start q-gutter-md">
+    <q-card class="my-card bg-secondary text-black" v-for="row in rows" :key="row._id">
+      <q-card-section>
+        <div class="text-h6">
+          {{ row.p_name}}
+        </div>
+        <div class="text-subtitle2">
+          {{ row.p_reply }}
+        </div>
+      </q-card-section>
 
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td auto-width>
-            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
-          </q-td>
-          <q-td
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.value }}
-          </q-td>
-        </q-tr>
-        <q-tr v-show="props.expand" :props="props">
-          <q-td colspan="100%">
-            <div class="text-left">This is expand slot for row above: {{ props.cols.name }}.</div>
-          </q-td>
-        </q-tr>
-      </template>
+      <q-card-section>
+        {{ lorem }}
+      </q-card-section>
 
-    </q-table>
+      <q-separator dark />
+
+      <q-card-actions>
+        <q-form @submit="changeColor">
+          <q-btn icon="fa-regular fa-thumbs-up" v-if="form.originThumb" type="submit"></q-btn>
+          <q-btn icon="fa-solid fa-thumbs-up" v-if="form.changeThumb" type="submit"></q-btn>
+          <q-btn icon="fa-regular fa-heart" v-if="form.originHeart" type="submit"></q-btn>
+          <q-btn icon="fa-solid fa-heart" v-if="form.changeHeart" type="submit"></q-btn>
+        </q-form>
+      </q-card-actions>
+    </q-card>
   </div>
 </template>
-
 <script setup>
-import { reactive } from 'vue'
 import { apiAuth } from 'src/boot/axios'
-import Swal from 'sweetalert2'
+import { reactive } from 'vue'
 
 const rows = reactive([])
+const form = reactive({
+  changeThumb: false,
+  changeHeart: false,
+  originThumb: true,
+  originHeart: true
+})
 
-const columns = [
-  {
-    name: 'title',
-    label: 'title',
-    align: 'left',
-    field: row => row.title
-  },
-  {
-    name: 'time',
-    label: 'time',
-    align: 'left',
-    field: row => row.time
-  },
-  {
-    name: 'content',
-    label: 'content',
-    align: 'left',
-    field: row => row.content
-  },
-  {
-    name: 'reply',
-    label: 'reply',
-    align: 'right',
-    field: row => row.reply
+const changeColor = () => {
+  if (form.originThumb === true) {
+    form.changeThumb = true
+    form.originThumb = false
+  } else if (form.originThumb === false) {
+    form.changeThumb = false
+    form.originThumb = true
+  } else if (form.originHeart === true) {
+    form.changeHeart = true
+    form.originHeart = false
+  } else if (form.originHeart === false) {
+    form.changeHeart = false
+    form.originHeart = true
   }
-];
+}
 
 (async () => {
-  try {
-    const { data } = await apiAuth.get('/questions/all')
-    rows.push(...data.result)
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: '失敗',
-      text: error?.response?.data?.message || '發生錯誤'
-    })
-  }
+  const { data } = await apiAuth.get('/users/appointmentReply')
+  rows.push(...data.result)
 })()
 </script>

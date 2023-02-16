@@ -13,6 +13,7 @@ export const useUserStore = defineStore('user', () => {
   const token = ref('')
   const pic = ref('')
   const available = ref('')
+  const partner = ref('')
 
   const isLogin = computed(() => {
     return token.value.length > 0
@@ -40,6 +41,7 @@ export const useUserStore = defineStore('user', () => {
         birth.value = data.result.birth
         role.value = data.result.role
         available.value = data.result.available
+        partner.value = data.result.partner
         Swal.fire({
           icon: 'success',
           title: '成功',
@@ -65,6 +67,7 @@ export const useUserStore = defineStore('user', () => {
       phone.value = ''
       birth.value = 0
       role.value = 0
+      partner.value = 0
       await Swal.fire({
         icon: 'success',
         title: '成功',
@@ -90,6 +93,7 @@ export const useUserStore = defineStore('user', () => {
       birth.value = data.result.birth
       role.value = data.result.role
       pic.value = data.result.pic
+      partner.value = data.result.partner
     } catch (error) {
       logout()
     }
@@ -114,7 +118,7 @@ export const useUserStore = defineStore('user', () => {
 
   // const register = async()
   return {
-    account, email, name, phone, birth, role, login, token, isLogin, isAdmin, logout, getUser, pic, changePassword, available
+    account, email, name, phone, birth, role, login, token, isLogin, isAdmin, logout, getUser, pic, changePassword, available, partner
   }
 }, {
   persist: {

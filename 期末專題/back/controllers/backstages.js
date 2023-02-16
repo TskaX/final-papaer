@@ -1,5 +1,6 @@
 import users from '../models/users.js'
 import messages from '../models/messages.js'
+import appointments from '../models/appointments.js'
 
 export const getAllUser = async (req, res) => {
   try {
@@ -125,6 +126,69 @@ export const deleteMessage = async (req, res) => {
     }, { new: true })
     if (!result) {
       res.status(404).json({ success: false, message: '找不到該消息' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: '刪訊息未知錯誤' })
+  }
+}
+
+export const getTodayAppointment = async (req, res) => {
+  try {
+    const resultToday = await appointments.find()
+    const date = new Date().toString().substring(8, 10)
+    const result = resultToday.filter(el => el.date.substring(8, 10) === date).filter(el => el.time.length > 0 && el.date.length > 0 && el.done !== 0)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
+export const getAllAppointment = async (req, res) => {
+  try {
+    const appointment = await appointments.find()
+    const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0 && el.done !== 0)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
+export const editAppointment = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      date: req.body.date,
+      time: req.body.time,
+      p_name: req.body.p_name,
+      place: req.body.place
+    }, { new: true })
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到該預約' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到789' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+export const deleteAppointment = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      date: req.body.date,
+      time: req.body.time,
+      p_name: req.body.p_name,
+      place: req.body.place
+    }, { new: true })
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到該預約' })
     } else {
       res.status(200).json({ success: true, message: '', result })
     }

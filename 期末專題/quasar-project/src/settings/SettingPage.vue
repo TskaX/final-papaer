@@ -10,7 +10,6 @@
             <q-card-section class="row items-center q-pb-none">
               <div class="text-h6">更換圖片</div>
             </q-card-section>
-
             <q-file v-model="form.pic" label="Standard" />
             <q-btn label="確認" type="submit" :loading="form.loading"/>
             <q-btn label="取消" v-close-popup :disable="form.loading" ></q-btn>

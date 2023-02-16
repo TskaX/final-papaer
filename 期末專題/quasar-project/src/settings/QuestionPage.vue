@@ -20,12 +20,12 @@
           >
             {{ col.label }}
           </q-th>
+          <q-th auto-width class="text-left">查看回覆</q-th>
         </q-tr>
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td auto-width>
-            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" v-if=showMessage(props.row.reply) />
+          <q-td>
             {{ props.row.reply }}
           </q-td>
           <q-td
@@ -34,6 +34,9 @@
             :props="props"
           >
             {{ col.value }}
+          </q-td>
+          <q-td auto-width>
+            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" v-if=showMessage(props.row.reply) />
           </q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
@@ -201,7 +204,7 @@ const pagesNumber = computed(() => {
   resize: none;
 }
 .q-table tr td:nth-child(1) {
-  width: 5%;
+  width: 10%;
 }
 .q-table tr td:nth-child(2) {
   width: 20%;
@@ -210,7 +213,11 @@ const pagesNumber = computed(() => {
   width: 20%;
 }
 .q-table tr td:nth-child(4) {
-  width: 40%;
+  width: 60%;
+  white-space:normal;
+}
+.q-table tr td:nth-child(5) {
+  width: 10%;
   white-space:normal;
 }
 </style>

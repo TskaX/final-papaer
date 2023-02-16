@@ -43,6 +43,7 @@ export const login = async (req, res) => {
         birth: req.user.birth,
         pic: req.user.pic,
         available: req.user.available,
+        partner: req.user.partner,
         token
       }
     })
@@ -73,7 +74,8 @@ export const getUser = async (req, res) => {
         phone: req.user.phone,
         birth: req.user.birth,
         role: req.user.role,
-        pic: req.user.pic
+        pic: req.user.pic,
+        partner: req.user.partner
       }
     })
   } catch (error) {
@@ -165,7 +167,6 @@ export const editPartner = async (req, res) => {
 export const getAllPartner = async (req, res) => {
   try {
     const result = await users.find({ partner: 1 })
-    console.log(result)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
@@ -194,5 +195,96 @@ export const addAppointment = async (req, res) => {
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
     }
+  }
+}
+
+export const getAppointment = async (req, res) => {
+  try {
+    const appointment = await appointments.find({ u_id: req.user._id })
+    const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
+export const checkAppointment = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      date: req.body.date,
+      time: req.body.time,
+      p_name: req.body.p_name,
+      place: req.body.place,
+      done: req.body.done
+    }, { new: true })
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到該預約' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到789' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+export const replyAppointment = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      u_reply: req.body.u_reply,
+      u_replyStatus: req.body.u_replyStatus
+    }, { new: true })
+    await req.user.save()
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+export const replyMember = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      p_reply: req.body.p_reply,
+      p_replyStatus: req.body.p_replyStatus
+    }, { new: true })
+    await req.user.save()
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+export const getAppointmentReply = async (req, res) => {
+  try {
+    const appointment = await appointments.find({ u_id: req.user._id })
+    const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0 && el.p_reply.length > 0)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }

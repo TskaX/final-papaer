@@ -16,7 +16,8 @@ const routes = [
       { path: '', name: 'setting', component: () => import('../settings/SettingPage.vue'), meta: { title: '會員設定', login: true } },
       { path: '/comment', name: 'comment', component: () => import('../settings/CommentPage.vue'), meta: { title: '個人評分', login: true } },
       { path: '/appointment', name: 'appointment', component: () => import('../settings/AppointmentPage.vue'), meta: { title: '預約紀錄', login: true } },
-      { path: '/question', name: 'question', component: () => import('../settings/QuestionPage.vue'), meta: { title: '個人發問', login: true } }
+      { path: '/question', name: 'question', component: () => import('../settings/QuestionPage.vue'), meta: { title: '個人發問', login: true } },
+      { path: '/work', name: 'work', component: () => import('../settings/WorkPage.vue'), meta: { title: '工作預約紀錄', login: true } }
     ]
   },
   {
