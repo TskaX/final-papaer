@@ -1,9 +1,26 @@
 <template>
-  <q-page style="width:40vw; margin:auto">
-    <div class="row justify-center column">
-      <img :src="user.pic" style="width:150px;height:150px">
+  <q-page id="info">
+    <div class="row justify-center items-center">
+      <q-card class="my-card">
+        <div class="text-h5 q-mt-sm q-mb-xs">會員小卡</div>
+          <q-card-section horizontal>
+            <q-img class="col-5" :src="user.pic" style="max-width:250px;height:250px"/>
+            <q-card-section class="info_main">
+              <div class="col">帳號:{{ user.account }}</div>
+              <div class="col">密碼:********</div>
+              <div class="col">姓名:{{ user.name }}</div>
+              <div class="col">電話:0{{ user.phone}}</div>
+              <div class="col">信箱:{{ user.email }}</div>
+              <div class="col">生日:{{ user.birth }}</div>
+            </q-card-section>
+          </q-card-section>
+          <q-separator />
+          <q-card-actions>
+            <q-btn flat label="修改大頭照" @click="PicDialog = true" style="width:370px"/>
+            <q-btn flat label="修改密碼" @click="EditPassword(1)" style="width:370px"></q-btn>
+          </q-card-actions>
+        </q-card>
 
-      <q-btn label="change" @click="PicDialog = true" style="width:300px"></q-btn>
       <q-dialog v-model="PicDialog" persistent>
         <q-card>
           <q-form @submit="submit" ref="formEl">
@@ -16,16 +33,6 @@
           </q-form>
         </q-card>
       </q-dialog>
-
-      <div class="col">帳號:{{ user.account }}</div>
-      <div class="col">密碼:********
-        <q-btn label="修改密碼" @click="EditPassword(1)"></q-btn>
-      </div>
-      <div class="col">姓名:{{ user.name }}</div>
-      <div class="col">電話:0{{ user.phone}}</div>
-      <div class="col">信箱:{{ user.email }}</div>
-      <div class="col">生日:{{ user.birth }}</div>
-
       <q-dialog v-model="formPassword.dialog" persistent>
         <q-card>
           <q-form @submit="submitPassword">
@@ -72,6 +79,9 @@ const formPassword = reactive({
 })
 
 const rules = {
+  required (value) {
+    return !!value || '欄位必填'
+  },
   length (value) {
     return (value.length >= 4 && value.length <= 16) || '長度為4~16個英數字'
   }

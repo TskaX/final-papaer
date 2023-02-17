@@ -2,7 +2,7 @@ import { Router } from 'express'
 import content from '../middleware/content.js'
 import * as auth from '../middleware/auth.js'
 import upload from '../middleware/upload.js'
-import { register, login, logout, getUser, editPicture, changePassword, addPartner, editPartner, getAllPartner, addAppointment, getAppointment, checkAppointment, replyAppointment, replyMember, getAppointmentReply } from '../controllers/users.js'
+import { register, login, logout, getUser, editPicture, changePassword, addPartner, editPartner, getAllPartner, addAppointment, getAppointment, checkAppointment, replyAppointment, replyMember, getAppointmentReply, encourageAppointment, finishAppointment } from '../controllers/users.js'
 
 const router = Router()
 
@@ -21,5 +21,7 @@ router.patch('/appointment/:id', content('application/json'), auth.jwt, checkApp
 router.post('/replyAppointment/:id', auth.jwt, replyAppointment)
 router.post('/replyMember/:id', auth.jwt, replyMember)
 router.get('/appointmentReply', auth.jwt, getAppointmentReply)
+router.patch('/encourageAppointment/:id', auth.jwt, encourageAppointment)
+router.patch('/finishAppointment/:id', auth.jwt, finishAppointment)
 
 export default router

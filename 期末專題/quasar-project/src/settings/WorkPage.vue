@@ -1,5 +1,4 @@
 <template>
-  <q-btn label="新增問題" @click="openDialog"></q-btn>
   <div class="q-pa-md">
     <q-table
       title="Treats"
@@ -12,6 +11,7 @@
     >
       <template v-slot:header="props">
         <q-tr :props="props">
+          <q-th auto-width class="text-left">完成按鈕</q-th>
           <q-th auto-width class="text-left">預約狀況</q-th>
           <q-th
             v-for="col in props.cols"
@@ -20,11 +20,14 @@
           >
             {{ col.label }}
           </q-th>
-          <q-th auto-width class="text-left">給會員留言</q-th>
+          <q-th auto-width class="text-left">給用戶留言</q-th>
         </q-tr>
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
+          <q-td>
+            <q-btn icon="fa-solid fa-check" @click="openFinish(props.row._id)" v-if="props.row.done === '待辦預約'"></q-btn>
+          </q-td>
           <q-td>
             {{ props.row.done }}
           </q-td>
@@ -40,7 +43,7 @@
           </q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
-          <q-td v-if="props.row.p_replyStatus === 1">
+          <q-td colspan="100%" v-if="props.row.p_replyStatus === 1">
             {{ props.row.p_reply  }}
           </q-td>
           <q-td colspan="100%" v-else>
@@ -73,6 +76,17 @@
       size="sm"
     />
   </div>
+  <q-dialog v-model="formDone.dialog" persistent>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">你確定完成該預約?</div>
+      </q-card-section>
+      <q-card-section>
+        <q-btn label="確認完成" @click="finishAppointment()"></q-btn>
+        <q-btn label="尚未完成" v-close-popup></q-btn>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
@@ -170,7 +184,38 @@ const submitAppointment = async (idx) => {
 const reset = (idx) => {
   const index = rows.findIndex(el => el._id === idx)
   rows[index].u_reply = ''
-};
+}
+
+const formDone = reactive({
+  dialog: false,
+  done: '',
+  _id: ''
+})
+
+const openFinish = (id) => {
+  formDone.dialog = true
+  const index = rows.findIndex(el => el._id === id)
+  formDone._id = rows[index]._id
+}
+
+const finishAppointment = async () => {
+  try {
+    formDone.done = 2
+    await apiAuth.patch('/users/finishAppointment/' + formDone._id, formDone)
+    Swal.fire({
+      icon: 'success',
+      title: '成功',
+      text: '完成預約'
+    })
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: '失敗',
+      text: '完成預約失敗'
+    })
+  }
+  formDone.dialog = false
+}
 
 (async () => {
   try {

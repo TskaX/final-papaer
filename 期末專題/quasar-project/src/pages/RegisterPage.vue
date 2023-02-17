@@ -1,20 +1,33 @@
 <template>
-  <div class="column" id="register">
-    <div class="col">
-      <h1 style="text-align:center">註冊</h1>
-    </div>
-    <div class="col">
-      <!-- ref 指向元件本身 -->
-      <q-form @submit="register" @reset="reset" ref="formEl">
-        <q-input type="text" label="帳號" :rules="[rules.required, rules.length]" v-model="form.account" lazy-rules></q-input>
-        <q-input type="password" label="密碼" :rules="[rules.required, rules.length]" v-model="form.password" lazy-rules></q-input>
-        <q-input type="email" label="信箱" :rules="[rules.required, rules.email]" v-model="form.email" lazy-rules></q-input>
-        <q-input type="text" label="姓名" :rules="[rules.required]" v-model="form.name"> lazy-rules</q-input>
-        <q-input type="text" label="電話" :rules="[rules.required]" v-model="form.phone" lazy-rules></q-input>
-        <q-input type="text" label="生日" v-model="form.birth"></q-input>
-        <q-btn label="註冊" type="submit" color="primary" :loading="loading"/>
-        <q-btn label="重寫" type="reset" color="primary"/>
-      </q-form>
+  <div class="container" id="register">
+    <div class="contain">
+      <div class="row">
+        <div class="logo">
+          <q-icon name="egg"></q-icon>
+          <span>友伴</span>
+        </div>
+        <div class="col-12" style="min-height: none;">
+          <div class="text-h3">註冊</div>
+          <q-btn icon="fa-solid fa-xmark" round to="/"></q-btn>
+        </div>
+        <div class="col-12">
+          <q-form @submit="register" @reset="reset" ref="formEl">
+            <q-input type="text" label="帳號" :rules="[rules.required, rules.length]" v-model="form.account"
+              lazy-rules standout="bg-teal text-white"></q-input>
+            <q-input type="password" label="密碼" :rules="[rules.required, rules.length]" v-model="form.password"
+              lazy-rules standout="bg-teal text-white"></q-input>
+            <q-input type="email" label="信箱" :rules="[rules.required, rules.email]" v-model="form.email"
+              lazy-rules standout="bg-teal text-white"></q-input>
+            <q-input type="text" label="姓名" :rules="[rules.required]" v-model="form.name" lazy-rules standout="bg-teal text-white"></q-input>
+            <q-input type="text" label="電話" :rules="[rules.required, rules.phoneLength]" v-model="form.phone" lazy-rules standout="bg-teal text-white"></q-input>
+            <q-input type="text" label="生日 ex - 2000/01/01" v-model="form.birth" standout="bg-teal text-white"></q-input>
+            <div class="btn-contain">
+              <q-btn label="註冊" type="submit" color="primary" :loading="loading" />
+              <q-btn label="重寫" type="reset" color="primary" />
+            </div>
+          </q-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -56,6 +69,9 @@ const rules = {
   },
   length (value) {
     return (value.length >= 4 && value.length <= 16) || '長度為4~16個英數字'
+  },
+  phoneLength (value) {
+    return (value.length === 10 || '手機號碼格式錯誤')
   }
 }
 

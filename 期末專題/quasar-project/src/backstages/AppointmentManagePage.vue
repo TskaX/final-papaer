@@ -145,7 +145,7 @@ const openDelete2 = (id) => {
 
 const changeWordToday = () => {
   for (let i = 0; i <= rows.length - 1; i++) {
-    if (rows[i].done === 0) {
+    if (rows[i].done === 1) {
       rows[i].done = '尚未完成'
     } else {
       rows[i].done = '已完成'
@@ -154,7 +154,7 @@ const changeWordToday = () => {
 }
 const changeWordAll = () => {
   for (let i = 0; i <= rows2.length - 1; i++) {
-    if (rows2[i].done === 0) {
+    if (rows2[i].done === 1) {
       rows2[i].done = '尚未完成'
     } else {
       rows2[i].done = '已完成'

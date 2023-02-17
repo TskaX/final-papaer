@@ -4,6 +4,7 @@
       <q-toolbar>
         <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
         <q-toolbar-title>Header</q-toolbar-title>
+        <q-btn icon="logout" @click="logout"></q-btn>
       </q-toolbar>
     </q-header>
 
@@ -55,15 +56,6 @@
           </q-item-section>
           <q-item-section>
             返回首頁
-          </q-item-section>
-        </q-item>
-        <q-separator style="margin-top:58vh"/>
-        <q-item clickable v-ripple @click="logout">
-          <q-item-section avatar>
-            <q-icon name="drafts" />
-          </q-item-section>
-          <q-item-section>
-            登出
           </q-item-section>
         </q-item>
       </q-list>

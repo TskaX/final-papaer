@@ -288,3 +288,48 @@ export const getAppointmentReply = async (req, res) => {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
+
+export const encourageAppointment = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      thumb: req.body.thumb,
+      love: req.body.love
+    }, { new: true })
+    await req.user.save()
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+export const finishAppointment = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      done: req.body.done
+    }, { new: true })
+    await req.user.save()
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到預約' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}

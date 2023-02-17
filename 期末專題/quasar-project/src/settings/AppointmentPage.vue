@@ -45,7 +45,7 @@
           </q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
-          <q-td v-if="props.row.u_replyStatus === 1">
+          <q-td  colspan="100%" v-if="props.row.u_replyStatus === 1">
             {{ props.row.u_reply  }}
           </q-td>
           <q-td colspan="100%" v-else>

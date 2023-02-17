@@ -1,17 +1,25 @@
 <template>
-  <div class="column" id="login">
-    <div class="col">
-      <h6 style="margin:0px"><a href="/#/">回首頁</a></h6>
-    </div>
-    <div class="col">
-      <h1 style="text-align:center">登入</h1>
-    </div>
-    <div class="col">
-      <q-form @submit="login" ref="formEl">
-        <q-input type="text" label="帳號" v-model="form.account"></q-input>
-        <q-input type="password" label="密碼" v-model="form.password"></q-input>
-        <q-btn label="登入" type="submit" :loading="loading"></q-btn>
-      </q-form>
+  <div class="container" id="login">
+    <div class="contain">
+      <div class="row">
+        <div class="logo">
+          <q-icon name="egg"></q-icon>
+          <span>友伴</span>
+        </div>
+        <div class="col-12">
+          <div class="text-h3">登入</div>
+        </div>
+        <div class="col-12">
+          <q-form @submit="login" ref="formEl">
+            <q-input type="text" label="帳號" v-model="form.account" standout="bg-teal text-white"></q-input><br>
+            <q-input type="password" label="密碼" v-model="form.password" standout="bg-teal text-white"></q-input>
+            <div class="btn-contain">
+              <q-btn label="登入" type="submit" :loading="loading"></q-btn>
+              <q-btn label="返回" to="/"></q-btn>
+            </div>
+          </q-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>

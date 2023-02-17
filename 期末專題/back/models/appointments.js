@@ -61,6 +61,14 @@ const appointmentSchema = new Schema({
     type: ObjectId,
     ref: 'users',
     required: [true, '缺少使用者']
+  },
+  thumb: {
+    type: Boolean,
+    default: true
+  },
+  love: {
+    type: Boolean,
+    default: true
   }
 }, { versionKey: false })
 

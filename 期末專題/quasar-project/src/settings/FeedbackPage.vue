@@ -3,10 +3,10 @@
     <q-card class="my-card bg-secondary text-black" v-for="row in rows" :key="row._id">
       <q-card-section>
         <div class="text-h6">
-          {{ row.p_name}}
+          {{ row.name}}
         </div>
         <div class="text-subtitle2">
-          {{ row.p_reply }}
+          {{ row.u_reply }}
         </div>
       </q-card-section>
 
@@ -18,10 +18,10 @@
 
       <q-card-actions>
         <q-form @submit="changeColor">
-          <q-btn icon="fa-regular fa-thumbs-up" v-if="row.thumb" @click="row.thumb = false, changeColor(row._id)"></q-btn>
-          <q-btn icon="fa-solid fa-thumbs-up" v-else @click= "row.thumb = true, changeColor(row._id)"></q-btn>
-          <q-btn icon="fa-regular fa-heart" v-if="row.love"  @click="row.love = false, changeColor(row._id)"></q-btn>
-          <q-btn icon="fa-solid fa-heart" v-else @click="row.love = true, changeColor(row._id)"></q-btn>
+          <q-icon name="fa-regular fa-thumbs-up" v-if="row.thumb" @click="row.thumb = false, changeColor(row._id)" size="2rem"></q-icon>
+          <q-icon name="fa-solid fa-thumbs-up" v-else @click= "row.thumb = true, changeColor(row._id)" size="2rem"></q-icon>
+          <q-icon name="fa-regular fa-heart" v-if="row.love"  @click="row.love = false, changeColor(row._id)" size="2rem"></q-icon>
+          <q-icon name="fa-solid fa-heart" v-else @click="row.love = true, changeColor(row._id)" size="2rem"></q-icon>
         </q-form>
       </q-card-actions>
     </q-card>
