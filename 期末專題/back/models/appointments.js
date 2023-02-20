@@ -29,6 +29,10 @@ const appointmentSchema = new Schema({
     type: String,
     required: [true, '缺少夥伴姓名']
   },
+  p_pic: {
+    type: String,
+    default: 'https://cdn0.popo.tw/uc/108/696172/O.jpg'
+  },
   place: {
     type: String,
     required: [true, '缺少地點']
@@ -61,6 +65,10 @@ const appointmentSchema = new Schema({
     type: ObjectId,
     ref: 'users',
     required: [true, '缺少使用者']
+  },
+  p_id: {
+    type: ObjectId,
+    required: [true, '缺少工作人員']
   },
   thumb: {
     type: Boolean,

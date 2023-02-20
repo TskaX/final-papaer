@@ -8,7 +8,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true" :width="200" :breakpoint="400" bordered class="bg-grey-3">
+    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true" :width="200" :breakpoint="400" bordered class="bg-grey-2">
       <q-list padding>
         <q-item clickable v-ripple to='/setting' exact>
           <q-item-section avatar>

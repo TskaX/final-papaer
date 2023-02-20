@@ -219,7 +219,7 @@ const finishAppointment = async () => {
 
 (async () => {
   try {
-    const { data } = await apiAuth.get('/users/appointment')
+    const { data } = await apiAuth.get('/users/workAppointment')
     data.result.reverse()
     rows.push(...data.result)
     test()

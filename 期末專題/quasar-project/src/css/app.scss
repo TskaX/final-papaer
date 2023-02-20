@@ -163,9 +163,166 @@
 }
 
 #info {
-  width:100vw; 
   margin:auto;
   display: flex;
+  justify-content: center;
+  background-color: rgba(239,236,227,0.7);
+  .my-card {
+    width: 60vw;
+    font-size: 2.5rem;
+    position: relative;
+    .main-card {
+      padding-top: 5rem;
+      .name {
+        text-align: center;
+        padding: 1.5rem 0 0rem;
+      }
+      .q-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        position: absolute;
+        top:0%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        box-shadow: 5px 5px 10px rgb(154,179,176);
+      }
+      .info_main {
+        font-size: 1.2rem;
+        div {
+          border-left: 10px solid $primary;
+          margin-bottom:10px;
+          padding-left: 10px;
+        }
+      }
+    }
+    .btn-card {
+      display: flex;
+      padding:0;
+      .line {
+        background-color: rgba(0, 0, 0, 0.12);
+        width:100%;
+        height: 1px;
+      }
+      .q-btn {
+        width: 100%;
+        margin:8px;
+        font-size: 1rem;
+        &:nth-child(2) {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+.password-dialog {
+  .q-card {
+    width:70vw ;
+    .password-title {
+      background-color: $primary;
+      div {
+        font-size: 1.3rem;
+      }
+    }
+    .password-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+    }
+    .password-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.pic-dialog {
+  .q-card {
+    width:20vw ;
+    .pic-title {
+      background-color: $primary;
+      div {
+        font-size: 1.3rem;
+      }
+    }
+    .pic-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+    }
+    .pic-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+#comment {
+  .title {
+    text-align: center;
+    margin: 24px auto 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  .q-card {
+    margin: 24px 24px 12px;
+    border: 5px solid $primary;
+    display: flex;
+    justify-content: space-between;
+    max-width: 400px;
+    .comment-main {
+      width: 70%;
+      display: flex;
+      .line {
+        width: 5px;
+        background-color: rgba(0, 0, 0, 0.12);
+        margin-right: 10px;
+      }
+      .comment-avatar {
+        width: 50%;
+        .q-img {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+        }
+      }
+      .message {
+        width: 50%;
+      }
+    }
+    .q-card__actions {
+      padding:0;
+      .q-form {
+        width: 100%;
+        height: 100%;
+        .comment-btn {
+          height: 100%;
+          padding:0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          .q-btn {
+            height: 50%;
+            &::before {
+              box-shadow: none;
+            }
+            &:nth-child(2) {
+              margin-left: 0;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (min-width: $breakpoint-sm-min) {
@@ -191,6 +348,24 @@
         left:-5px;
         top:-5px;
       }
+    }
+  }
+
+  #info {
+    .my-card {
+      .main-card {
+        .q-img {
+          width: 200px;
+          height: 200px;
+        }
+      }
+    }
+  }
+  
+  #comment {
+    .my-card {
+      box-sizing: border-box;
+      margin: 24px auto;
     }
   }
 }
@@ -220,6 +395,40 @@
       }
     }
   }
+
+  #info {
+    .my-card {
+      .main-card {
+        margin-top: 3rem;
+        padding-top: 0;
+        .q-img {
+          left:25%;
+          top:30%;
+        }
+        .name {
+          font-size: 2.5rem;
+          position: absolute;
+          left:17%;
+          bottom:20%;
+        }
+        .info_main {
+          font-size: 1.4rem;
+          padding-left: 30vw;
+        }
+      }
+      .btn-card {
+        .q-btn {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+  #comment {
+    .my-card {
+      box-sizing: border-box;
+      margin: 24px 60px;
+    }
+  }
 }
 
 @media (min-width: $breakpoint-lg-min) {
@@ -244,6 +453,25 @@
       .logo {
         left:-20px;
         top:-20px;
+      }
+    }
+  }
+  #info {
+    .my-card {
+      width: 50vw;
+      .main-card {
+        .q-img {
+          width: 300px;
+          height: 300px;
+          top:40%;
+        }
+        .name {
+          bottom: 8%;
+          left:19%;
+        }
+        .info_main {
+          padding-left: 25vw;
+        }
       }
     }
   }

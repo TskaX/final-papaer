@@ -16,7 +16,12 @@
     </div>
     <div id="container-B">
       <h1>Partner Intro</h1>
-      <q-btn label="預約" @click="openDialog"></q-btn>
+      <q-card v-for="row in rows" :key="row._id">
+        <q-card-section>
+          <q-img :src="row.pic"></q-img>
+          <q-btn label="預約" @click="openDialog(row._id)"></q-btn>
+        </q-card-section>
+      </q-card>
       <q-dialog v-model="form.dialog">
         <q-card>
           <q-card-section>
@@ -130,10 +135,16 @@ const form = reactive({
   phone: '',
   email: '',
   p_name: '',
-  place: ''
+  place: '',
+  p_pic: '',
+  p_id: ''
 })
 
-const openDialog = () => {
+const openDialog = (id) => {
+  const index = rows.findIndex(el => el._id === id)
+  form.p_pic = rows[index].pic
+  form.p_name = rows[index].name
+  form.p_id = rows[index]._id
   form.dialog = true
   form.place = ''
 }
@@ -167,6 +178,7 @@ const rows = reactive([]);
 (async () => {
   const { data } = await apiAuth.get('/users/partner')
   rows.push(...data.result)
+  console.log(rows)
 })()
 </script>
 

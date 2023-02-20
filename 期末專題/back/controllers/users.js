@@ -184,7 +184,9 @@ export const addAppointment = async (req, res) => {
       time: req.body.time,
       p_name: req.body.p_name,
       place: req.body.place,
-      u_id: req.user._id
+      u_id: req.user._id,
+      p_pic: req.body.p_pic,
+      p_id: req.body.p_id
     })
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
@@ -202,6 +204,18 @@ export const getAppointment = async (req, res) => {
   try {
     const appointment = await appointments.find({ u_id: req.user._id })
     const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0)
+    console.log(result)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
+export const getWorkAppointment = async (req, res) => {
+  try {
+    const appointment = await appointments.find({ p_id: req.user._id })
+    const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0 && el.done !== 0)
+    console.log(result)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
@@ -230,6 +244,17 @@ export const checkAppointment = async (req, res) => {
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
     }
+  }
+}
+
+export const AppointmentReplyP = async (req, res) => {
+  try {
+    const appointment = await appointments.find({ u_id: req.user._id })
+    const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0 && el.p_reply.length > 0)
+    console.log(result)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
 
@@ -281,8 +306,9 @@ export const replyMember = async (req, res) => {
 
 export const getAppointmentReply = async (req, res) => {
   try {
-    const appointment = await appointments.find({ u_id: req.user._id })
-    const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0 && el.p_reply.length > 0)
+    const appointment = await appointments.find({ p_id: req.user._id })
+    console.log(appointment)
+    const result = appointment.filter(el => el.time.length > 0 && el.date.length > 0 && el.u_reply.length > 0)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
