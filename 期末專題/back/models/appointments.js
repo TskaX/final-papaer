@@ -33,6 +33,10 @@ const appointmentSchema = new Schema({
     type: String,
     default: 'https://cdn0.popo.tw/uc/108/696172/O.jpg'
   },
+  u_pic: {
+    type: String,
+    default: 'https://cdn0.popo.tw/uc/108/696172/O.jpg'
+  },
   place: {
     type: String,
     required: [true, '缺少地點']

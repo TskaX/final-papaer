@@ -1,34 +1,65 @@
 // app global css in SCSS form
 #front-layout {
-  overflow-x: hidden;
+  overflow: hidden;
   .q-header {
+    width: 100vw;
+    padding: 0 30px 0 5%;
     .q-layout__shadow:after {
       box-shadow: none;
     }
-    position: absolute;
-    padding: 0 10%;
+    .logo {
+      .q-btn {
+        font-size: 30px;
+        color:$accent;
+      }
+    }
     .q-btn::before {
       box-shadow: none;
       margin-right: 0.2rem;
+    }
+    .burger-icon {
+      font-size: 20px;
+      color:$accent;
+    }
+    .q-drawer {
+      background-color: transparent;
+      border:0;
+      margin: 0 30px;
+      color:$accent;
+      div {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+      .q-btn {
+        margin-bottom: 20px;
+      }
+      .scroll {
+        overflow: hidden;
+      }
     }
   }
 }
 #front-main {
   flex-direction: column;
-  .column {
-    background-color: $primary;
+  .background {
     width: 100vw;
-    .col {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    height: calc(100vh - 80px);
+    background: url('https://i.imgur.com/nS56Vn9.jpg') center/cover;
+    background-position-x: calc(-300px + 10vw);
+  }
+  .toolbar {
+    background-color: $secondary;
+    width: 100vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
       a {
         font-size: 1.2rem;
         width: 10%;
         text-decoration: none;
         color:black;
       }
-    }
   }
   #container-A {
     height: 100vh;
@@ -166,7 +197,7 @@
   margin:auto;
   display: flex;
   justify-content: center;
-  background-color: rgba(239,236,227,0.7);
+  background-color: $secondary_7 ;
   .my-card {
     width: 60vw;
     font-size: 2.5rem;
@@ -219,9 +250,10 @@
   .q-card {
     width:70vw ;
     .password-title {
-      background-color: $primary;
+      background-color: $title;
       div {
         font-size: 1.3rem;
+        color:white;
       }
     }
     .password-main {
@@ -245,8 +277,9 @@
   .q-card {
     width:20vw ;
     .pic-title {
-      background-color: $primary;
+      background-color: $title;
       div {
+        color:white;
         font-size: 1.3rem;
       }
     }
@@ -267,6 +300,8 @@
   }
 }
 #comment {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7 ;
   .title {
     text-align: center;
     margin: 24px auto 0;
@@ -274,7 +309,7 @@
     font-weight: bold;
   }
   .q-card {
-    margin: 24px 24px 12px;
+    margin: 24px auto;
     border: 5px solid $primary;
     display: flex;
     justify-content: space-between;
@@ -282,21 +317,25 @@
     .comment-main {
       width: 70%;
       display: flex;
+      position: relative;
       .line {
         width: 5px;
         background-color: rgba(0, 0, 0, 0.12);
         margin-right: 10px;
+        display: none;
       }
       .comment-avatar {
-        width: 50%;
         .q-img {
-          width: 100px;
-          height: 100px;
+          width: 50px;
+          height: 50px;
           border-radius: 50%;
+          position: absolute;
+          left:-9%;
+          top:-30%;
         }
       }
       .message {
-        width: 50%;
+        width: 100%;
       }
     }
     .q-card__actions {
@@ -321,6 +360,756 @@
           }
         }
       }
+    }
+  }
+}
+
+#appointment {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+      &:nth-child(8) {
+        text-align: center;
+      }
+    }
+    tr td:nth-child(1) {
+      width: 10%;
+    }
+    tr td:nth-child(2) {
+      width: 15%;
+    }
+    tr td:nth-child(3) {
+      width: 15%;
+    }
+    tr td:nth-child(4) {
+      width: 15%;
+    }
+    tr td:nth-child(5) {
+      width: 15%;
+    }
+    tr td:nth-child(6) {
+      width: 10%;
+    }
+    tr td:nth-child(7) {
+      width: 10%;
+    }
+    tr td:nth-child(8) {
+      text-align: center;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.appointment-dialog {
+  .q-card {
+    width:70vw ;
+    .appointment-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .appointment-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+    }
+    .appointment-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.deleteAppointment-dialog {
+  .q-card {
+    width:20vw ;
+    .deleteAppointment-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .deleteAppointment-btn {
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+#question {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .add {
+    margin: 0 0 24px 0;
+    background-color: $title;
+    color:white;
+  }
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+    }
+    tr td:nth-child(1) {
+      width: 10%;
+    }
+    tr td:nth-child(2) {
+      width: 20%;
+    }
+    tr td:nth-child(3) {
+      width: 20%;
+    }
+    tr td:nth-child(4) {
+      width: 60%;
+      white-space:normal;
+    }
+    tr td:nth-child(5) {
+      width: 10%;
+      text-align: center;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+#work {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+      &:nth-child(8) {
+        text-align: center;
+      }
+    }
+    tr td:nth-child(1) {
+      width: 10%;
+    }
+    tr td:nth-child(2) {
+      width: 10%;
+    }
+    tr td:nth-child(3) {
+      width: 10%;
+    }
+    tr td:nth-child(4) {
+      width: 15%;
+    }
+    tr td:nth-child(5) {
+      width: 10%;
+    }
+    tr td:nth-child(6) {
+      width: 10%;
+    }
+    tr td:nth-child(7) {
+      width: 10%;
+    }
+    tr td:nth-child(8) {
+      width: 10%;
+      text-align: center;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.work-dialog {
+  .q-card {
+    width:20vw ;
+    .work-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .work-btn {
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+#feedback {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7 ;
+  .title {
+    text-align: center;
+    margin: 24px auto 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  .q-card {
+    margin: 24px auto;
+    border: 5px solid $primary;
+    display: flex;
+    justify-content: space-between;
+    max-width: 400px;
+    .feedback-main {
+      width: 70%;
+      display: flex;
+      position: relative;
+      .line {
+        width: 5px;
+        background-color: rgba(0, 0, 0, 0.12);
+        margin-right: 10px;
+        display: none;
+      }
+      .feedback-avatar {
+        .q-img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          position: absolute;
+          left:-9%;
+          top:-30%;
+        }
+      }
+      .message {
+        width: 100%;
+      }
+    }
+  }
+}
+
+#setting {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+      &:nth-child(8) {
+        text-align: center;
+      }
+    }
+    tr td:nth-child(1) {
+      width: 15%;
+    }
+    tr td:nth-child(2) {
+      width: 15%;
+    }
+    tr td:nth-child(3) {
+      width: 20%;
+    }
+    tr td:nth-child(4) {
+      width: 15%;
+    }
+    tr td:nth-child(5) {
+      width: 10%;
+    }
+    tr td:nth-child(6) {
+      width: 15%;
+    }
+    tr td:nth-child(7) {
+      text-align: center;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.setting-dialog {
+  .q-card {
+    width:70vw ;
+    .setting-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .setting-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .q-file {
+        margin-top: 10px;
+      }
+    }
+    .setting-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+#partner {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .add {
+    margin: 0 0 24px 0;
+    background-color: $title;
+    color:white;
+  }
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+    }
+    tr td:nth-child(1) {
+      width: 10%;
+    }
+    tr td:nth-child(2) {
+      width: 10%;
+    }
+    tr td:nth-child(3) {
+      width: 20%;
+    }
+    tr td:nth-child(4) {
+      width: 10%;
+    }
+    tr td:nth-child(5) {
+      width: 10%;
+    }
+    tr td:nth-child(6) {
+      width: 15%;
+    }
+    tr td:nth-child(7) {
+      width: 15%;
+      text-align: center;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.partner-dialog {
+  .q-card {
+    width:70vw ;
+    .partner-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .partner-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .q-file {
+        margin-top: 10px;
+      }
+    }
+    .partner-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+#appointment-manage {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+    }
+    tr td:nth-child(1) {
+      width: 15%;
+    }
+    tr td:nth-child(2) {
+      width: 10%;
+    }
+    tr td:nth-child(3) {
+      width: 10%;
+    }
+    tr td:nth-child(4) {
+      width: 15%;
+    }
+    tr td:nth-child(5) {
+      width: 10%;
+    }
+    tr td:nth-child(6) {
+      width: 10%;
+    }
+    tr td:nth-child(7) {
+      width: 15%;
+    }
+    tr td:nth-child(8) {
+      width: 10%;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+    .disabled {
+      cursor:auto;
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.appointmentManage-dialog {
+  .q-card {
+    width:70vw ;
+    .appointmentManage-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .appointmentManage-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .q-file {
+        margin-top: 10px;
+      }
+    }
+    .appointmentManage-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.appointmentDelete-dialog {
+  .q-card {
+    width:20vw ;
+    .appointmentDelete-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .appointmentDelete-btn {
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+#pageMessageManage {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .add {
+    margin: 0 0 24px 0;
+    background-color: $title;
+    color:white;
+  }
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+    }
+    tr td:nth-child(1) {
+      width: 15%;
+    }
+    tr td:nth-child(2) {
+      width: 15%;
+    }
+    tr td:nth-child(3) {
+      width: 60%;
+    }
+    tr td:nth-child(4) {
+      width: 10%;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.pageMessageManage-dialog {
+  .q-card {
+    width:70vw ;
+    .pageMessageManage-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .pageMessageManage-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .q-file {
+        margin-top: 10px;
+      }
+    }
+    .pageMessageManage-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.pageMessageDelete-dialog {
+  .q-card {
+    width:20vw ;
+    .pageMessageDelete-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .pageMessageDelete-btn {
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.partner-dialog {
+  .q-card {
+    width:70vw ;
+    .partner-title {
+      background-color: $title;
+      div {
+        font-size: 1.3rem;
+        color:white;
+      }
+    }
+    .partner-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .q-file {
+        margin-top: 10px;
+      }
+    }
+    .partner-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
+
+#question-manage {
+  height: calc(100vh - 50px);
+  background-color: $secondary_7;
+  .q-table__top {
+    background-color: $title;
+    color:white;
+    .q-table__title {
+      font-weight: bold;
+    }
+  }
+  .q-table {
+    th {
+      font-weight: bold;
+      font-size: 1rem;
+      color:$accent;
+      &:nth-child(1) {
+        text-align: center;
+      }
+    }
+    tr td:nth-child(1) {
+      width: 5%;
+      text-align: center;
+    }
+    tr td:nth-child(2) {
+      width: 10%;
+    }
+    tr td:nth-child(3) {
+      width: 10%;
+    }
+    tr td:nth-child(4) {
+      width: 10%;
+    }
+    tr td:nth-child(5) {
+      width: 50%;
+    }
+    .q-btn {
+      color:$accent;
+      &::before {
+        box-shadow: none;
+      }
+    }
+  }
+  .q-pagination {
+    margin:24px 24px 24px 0;
+    .q-btn {
+      width: 50px;
+      height: 50px;
     }
   }
 }
@@ -363,9 +1152,46 @@
   }
   
   #comment {
-    .my-card {
-      box-sizing: border-box;
-      margin: 24px auto;
+    .q-card {
+      margin: 24px auto 24px;
+      max-width: 1000px;
+      .comment-main {
+        .line {
+          display: block;
+        }
+        .comment-avatar {
+          .q-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+            top:0%;
+            left:-5%;
+          }
+        }
+      }
+    }
+  }
+
+  #feedback {
+    .q-card {
+      margin: 24px auto 24px;
+      max-width: 1000px;
+      .feedback-main {
+        .line {
+          display: block;
+        }
+        .feedback-avatar {
+          .q-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+            top:0%;
+            left:-5%;
+          }
+        }
+      }
     }
   }
 }
@@ -424,9 +1250,44 @@
     }
   }
   #comment {
-    .my-card {
-      box-sizing: border-box;
-      margin: 24px 60px;
+    .q-card {
+      max-width: 1000px;
+      .comment-main {
+        .line {
+          display: block;
+        }
+        .comment-avatar {
+          .q-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+            top:0%;
+            left:-5%;
+          }
+        }
+      }
+    }
+  }
+
+  #feedback {
+    .q-card {
+      max-width: 1000px;
+      .feedback-main {
+        .line {
+          display: block;
+        }
+        .feedback-avatar {
+          .q-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+            top:0%;
+            left:-5%;
+          }
+        }
+      }
     }
   }
 }

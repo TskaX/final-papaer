@@ -1,97 +1,105 @@
 <template>
-  <q-btn label="新增問題" @click="openDialog"></q-btn>
-  <div class="q-pa-md">
-    <q-table
-      title="Treats"
+  <div id="question">
+    <div class="q-pa-md">
+      <q-btn label="新增問題" @click="openDialog" class="add"></q-btn>
+      <q-table
+      title="個人發問"
       :rows="rows"
       :columns="columns"
       v-model:pagination="pagination"
       hide-pagination
       :filter="filter"
       row-key="_id"
-    >
+      >
       <template v-slot:header="props">
-        <q-tr :props="props">
-          <q-th auto-width class="text-left">回覆情況</q-th>
-          <q-th
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.label }}
-          </q-th>
-          <q-th auto-width class="text-left">查看回覆</q-th>
-        </q-tr>
-      </template>
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td>
-            {{ props.row.reply }}
-          </q-td>
-          <q-td
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.value }}
-          </q-td>
-          <q-td auto-width>
-            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" v-if=showMessage(props.row.reply) />
-          </q-td>
-        </q-tr>
-        <q-tr v-show="props.expand" :props="props">
-          <q-td colspan="100%">
-            <div class="text-left">{{ props.row.replyContent }}</div>
-          </q-td>
-        </q-tr>
-      </template>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
-    </q-table>
-    <q-pagination
-      v-model="pagination.page"
-      color="grey-8"
-      :max="pagesNumber"
-      size="sm"
-    />
+          <q-tr :props="props">
+            <q-th auto-width class="text-left">回覆情況</q-th>
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.label }}
+            </q-th>
+            <q-th auto-width class="text-left">查看回覆</q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td>
+              {{ props.row.reply }}
+            </q-td>
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.value }}
+            </q-td>
+            <q-td auto-width>
+              <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" v-if=showMessage(props.row.reply) />
+            </q-td>
+          </q-tr>
+          <q-tr v-show="props.expand" :props="props">
+            <q-td colspan="100%">
+              <div class="text-left">{{ props.row.replyContent }}</div>
+            </q-td>
+          </q-tr>
+        </template>
+        <template v-slot:top-right>
+          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+      </q-table>
+      <q-pagination
+        v-model="pagination.page"
+        color="grey-8"
+        :max="pagesNumber"
+        size="sm"
+      />
+    </div>
+    <q-dialog v-model="form.dialog">
+      <q-card>
+        <q-form @submit="submit" @reset="reset">
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h6">問題發問</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+          <q-card-section>
+            <div class="row">
+              <div class="col-5">主旨
+                <q-input outlined v-model="form.title" :rules="[rules.required]"></q-input>
+              </div>
+              <div class="col-2"></div>
+              <div class="col-5">方便聯絡時間
+                <q-input outlined v-model="form.time" :rules="[rules.required]"></q-input>
+              </div>
+              <div class="col-12">描述問題
+                <q-input outlined type="textarea" v-model="form.content" :rules="[rules.required]"></q-input>
+              </div>
+              <q-btn label="發送" type="submit"></q-btn>
+              <q-btn label="重寫" type="reset"></q-btn>
+            </div>
+          </q-card-section>
+        </q-form>
+      </q-card>
+    </q-dialog>
   </div>
-  <q-dialog v-model="form.dialog">
-    <q-card>
-      <q-form @submit="submit" @reset="reset">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">問題發問</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-        <q-card-section>
-          <div class="row">
-            <div class="col-5">主旨
-              <q-input outlined v-model="form.title"></q-input>
-            </div>
-            <div class="col-2"></div>
-            <div class="col-5">方便聯絡時間
-              <q-input outlined v-model="form.time"></q-input>
-            </div>
-            <div class="col-12">描述問題
-              <q-input outlined type="textarea" v-model="form.content"></q-input>
-            </div>
-            <q-btn label="發送" type="submit"></q-btn>
-            <q-btn label="重寫" type="reset"></q-btn>
-          </div>
-        </q-card-section>
-      </q-form>
-    </q-card>
-  </q-dialog>
 </template>
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import { apiAuth } from 'src/boot/axios'
 import Swal from 'sweetalert2'
+
+const rules = {
+  required (value) {
+    return !!value || '欄位必填'
+  }
+}
 
 const form = reactive({
   title: '',
@@ -175,7 +183,7 @@ const pagination = ref({
   sortBy: 'name',
   descending: false,
   page: 1,
-  rowsPerPage: 4
+  rowsPerPage: 5
 })
 
 const pagesNumber = computed(() => {
@@ -198,26 +206,3 @@ const pagesNumber = computed(() => {
 })()
 
 </script>
-
-<style>
-.q-textarea .q-field__native {
-  resize: none;
-}
-.q-table tr td:nth-child(1) {
-  width: 10%;
-}
-.q-table tr td:nth-child(2) {
-  width: 20%;
-}
-.q-table tr td:nth-child(3) {
-  width: 20%;
-}
-.q-table tr td:nth-child(4) {
-  width: 60%;
-  white-space:normal;
-}
-.q-table tr td:nth-child(5) {
-  width: 10%;
-  white-space:normal;
-}
-</style>

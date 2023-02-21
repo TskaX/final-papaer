@@ -1,92 +1,94 @@
 <template>
-  <div class="q-pa-md">
-    <q-table
-      title="Treats"
-      :rows="rows"
-      :columns="columns"
-      v-model:pagination="pagination"
-      hide-pagination
-      :filter="filter"
-      row-key="_id"
-    >
-      <template v-slot:header="props">
-        <q-tr :props="props">
-          <q-th auto-width class="text-left">完成按鈕</q-th>
-          <q-th auto-width class="text-left">預約狀況</q-th>
-          <q-th
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.label }}
-          </q-th>
-          <q-th auto-width class="text-left">給用戶留言</q-th>
-        </q-tr>
-      </template>
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td>
-            <q-btn icon="fa-solid fa-check" @click="openFinish(props.row._id)" v-if="props.row.done === '待辦預約'"></q-btn>
-          </q-td>
-          <q-td>
-            {{ props.row.done }}
-          </q-td>
-          <q-td
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.value }}
-          </q-td>
-          <q-td auto-width>
-            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" v-if=showMessage(props.row.done) />
-          </q-td>
-        </q-tr>
-        <q-tr v-show="props.expand" :props="props">
-          <q-td colspan="100%" v-if="props.row.p_replyStatus === 1">
-            {{ props.row.p_reply  }}
-          </q-td>
-          <q-td colspan="100%" v-else>
-            <q-form @submit="submitAppointment(props.row._id)" @reset="reset(props.row._id)">
-              <div class="row">
-                <div class="col-10">
-                  <q-input type="text" v-model="props.row.p_reply" ></q-input>
+  <div id="work">
+    <div class="q-pa-md">
+      <q-table
+        title="工作預約紀錄"
+        :rows="rows"
+        :columns="columns"
+        v-model:pagination="pagination"
+        hide-pagination
+        :filter="filter"
+        row-key="_id"
+      >
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th auto-width class="text-left">完成按鈕</q-th>
+            <q-th auto-width class="text-left">預約狀況</q-th>
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.label }}
+            </q-th>
+            <q-th auto-width class="text-left">給用戶留言</q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td>
+              <q-btn icon="fa-solid fa-check" @click="openFinish(props.row._id)" v-if="props.row.done === '待辦預約'"></q-btn>
+            </q-td>
+            <q-td>
+              {{ props.row.done }}
+            </q-td>
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.value }}
+            </q-td>
+            <q-td auto-width>
+              <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" v-if=showMessage(props.row.done) />
+            </q-td>
+          </q-tr>
+          <q-tr v-show="props.expand" :props="props">
+            <q-td colspan="100%" v-if="props.row.p_replyStatus === 1">
+              {{ props.row.p_reply  }}
+            </q-td>
+            <q-td colspan="100%" v-else>
+              <q-form @submit="submitAppointment(props.row._id)" @reset="reset(props.row._id)">
+                <div class="row">
+                  <div class="col-10">
+                    <q-input type="text" v-model="props.row.p_reply" ></q-input>
+                  </div>
+                  <div class="col-2">
+                    <q-btn type="submit" label="確認回覆"></q-btn>
+                    <q-btn type="reset" label="取消回覆" @click="props.expand = false"></q-btn>
+                  </div>
                 </div>
-                <div class="col-2">
-                  <q-btn type="submit" label="確認回覆"></q-btn>
-                  <q-btn type="reset" label="取消回覆" @click="props.expand = false"></q-btn>
-                </div>
-              </div>
-            </q-form>
-          </q-td>
-        </q-tr>
-      </template>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
-    </q-table>
-    <q-pagination
-      v-model="pagination.page"
-      color="grey-8"
-      :max="pagesNumber"
-      size="sm"
-    />
+              </q-form>
+            </q-td>
+          </q-tr>
+        </template>
+        <template v-slot:top-right>
+          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+      </q-table>
+      <q-pagination
+        v-model="pagination.page"
+        color="grey-8"
+        :max="pagesNumber"
+        size="sm"
+      />
+    </div>
+    <q-dialog v-model="formDone.dialog" persistent class="work-dialog">
+      <q-card>
+        <q-card-section class="work-title">
+          <div>你確定完成該預約?</div>
+        </q-card-section>
+        <q-card-section class="work-btn">
+          <q-btn label="確認完成" @click="finishAppointment()"></q-btn>
+          <q-btn label="尚未完成" v-close-popup></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
-  <q-dialog v-model="formDone.dialog" persistent>
-    <q-card>
-      <q-card-section>
-        <div class="text-h6">你確定完成該預約?</div>
-      </q-card-section>
-      <q-card-section>
-        <q-btn label="確認完成" @click="finishAppointment()"></q-btn>
-        <q-btn label="尚未完成" v-close-popup></q-btn>
-      </q-card-section>
-    </q-card>
-  </q-dialog>
 </template>
 
 <script setup>
@@ -143,11 +145,6 @@ const columns = reactive([
     label: '地點',
     align: 'left',
     field: row => row.place
-  },
-  {
-    name: 'button',
-    label: '',
-    align: 'left'
   }
 ])
 
@@ -155,7 +152,7 @@ const pagination = ref({
   sortBy: 'name',
   descending: false,
   page: 1,
-  rowsPerPage: 4
+  rowsPerPage: 10
 })
 
 const pagesNumber = computed(() => {
@@ -223,7 +220,6 @@ const finishAppointment = async () => {
     data.result.reverse()
     rows.push(...data.result)
     test()
-    console.log(rows)
   } catch (error) {
     Swal.fire({
       icon: 'error',
@@ -234,21 +230,3 @@ const finishAppointment = async () => {
 })()
 
 </script>
-
-<style>
-.q-table tr td:nth-child(1) {
-  width: 15%;
-}
-.q-table tr td:nth-child(2) {
-  width: 15%;
-}
-.q-table tr td:nth-child(3) {
-  width: 15%;
-}
-.q-table tr td:nth-child(4) {
-  width: 15%;
-}
-.q-table tr td:nth-child(5) {
-  width: 15%;
-}
-</style>

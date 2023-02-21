@@ -1,126 +1,128 @@
 <template>
-  <div class="q-pa-md">
-    <q-table
-      title="尚未回覆"
-      :rows="rows"
-      :columns="columns"
-      v-model:pagination="pagination"
-      hide-pagination
-      :filter="filter"
-      row-key="_id"
-    >
-      <template v-slot:header="props">
-        <q-tr :props="props">
-          <q-th auto-width class="text-left">回覆按鈕</q-th>
-          <q-th
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.label }}
-          </q-th>
-        </q-tr>
-      </template>
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td auto-width>
-            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'"/>
-          </q-td>
-          <q-td
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.value }}
-          </q-td>
-        </q-tr>
-        <q-tr v-show="props.expand" :props="props">
-          <q-td colspan="100%">
-            <q-form @submit="submit(props.row._id)" @reset="reset(props.row._id)">
-              <div class="row">
-                <div class="col-10">
-                  <q-input type="text" v-model="props.row.replyContent" ></q-input>
+  <div id="question-manage">
+    <div class="q-pa-md" >
+      <q-table
+        title="尚未回覆"
+        :rows="rows"
+        :columns="columns"
+        v-model:pagination="pagination"
+        hide-pagination
+        :filter="filter"
+        row-key="_id"
+      >
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th auto-width class="text-left">回覆按鈕</q-th>
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.label }}
+            </q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td auto-width>
+              <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'"/>
+            </q-td>
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.value }}
+            </q-td>
+          </q-tr>
+          <q-tr v-show="props.expand" :props="props">
+            <q-td colspan="100%">
+              <q-form @submit="submit(props.row._id)" @reset="reset(props.row._id)">
+                <div class="row">
+                  <div class="col-10">
+                    <q-input type="text" v-model="props.row.replyContent" ></q-input>
+                  </div>
+                  <div class="col-2">
+                    <q-btn type="submit" label="確認回覆"></q-btn>
+                    <q-btn type="reset" label="取消回覆" @click="props.expand = false"></q-btn>
+                  </div>
                 </div>
-                <div class="col-2">
-                  <q-btn type="submit" label="確認回覆"></q-btn>
-                  <q-btn type="reset" label="取消回覆" @click="props.expand = false"></q-btn>
-                </div>
-              </div>
-            </q-form>
-          </q-td>
-        </q-tr>
-      </template>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
-    </q-table>
-    <q-pagination
-      v-model="pagination.page"
-      color="grey-8"
-      :max="pagesNumber"
-      size="sm"
-    />
-  </div>
+              </q-form>
+            </q-td>
+          </q-tr>
+        </template>
+        <template v-slot:top-right>
+          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+      </q-table>
+      <q-pagination
+        v-model="pagination.page"
+        color="grey-8"
+        :max="pagesNumber"
+        size="sm"
+      />
+    </div>
 
-  <div class="q-pa-md">
-    <q-table
-      title="已回覆"
-      :rows="rows2"
-      :columns="columns"
-      v-model:pagination="pagination2"
-      hide-pagination
-      :filter="filter"
-      row-key="_id"
-    >
-      <template v-slot:header="props">
-        <q-tr :props="props">
-          <q-th auto-width class="text-left">回覆內容</q-th>
-          <q-th
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.label }}
-          </q-th>
-        </q-tr>
-      </template>
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td auto-width>
-            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'"/>
-          </q-td>
-          <q-td
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
-            {{ col.value }}
-          </q-td>
-        </q-tr>
-        <q-tr v-show="props.expand" :props="props">
-          <q-td colspan="100%">
-            <div class="text-left">{{ props.row.replyContent }}</div>
-          </q-td>
-        </q-tr>
-      </template>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
-    </q-table>
-    <q-pagination
-      v-model="pagination2.page"
-      color="grey-8"
-      :max="pagesNumber2"
-      size="sm"
-    />
+    <div class="q-pa-md">
+      <q-table
+        title="已回覆"
+        :rows="rows2"
+        :columns="columns"
+        v-model:pagination="pagination2"
+        hide-pagination
+        :filter="filter"
+        row-key="_id"
+      >
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th auto-width class="text-left">回覆內容</q-th>
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.label }}
+            </q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td auto-width>
+              <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'"/>
+            </q-td>
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.value }}
+            </q-td>
+          </q-tr>
+          <q-tr v-show="props.expand" :props="props">
+            <q-td colspan="100%">
+              <div class="text-left">{{ props.row.replyContent }}</div>
+            </q-td>
+          </q-tr>
+        </template>
+        <template v-slot:top-right>
+          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+      </q-table>
+      <q-pagination
+        v-model="pagination2.page"
+        color="grey-8"
+        :max="pagesNumber2"
+        size="sm"
+      />
+    </div>
   </div>
 </template>
 <script setup>
@@ -187,7 +189,7 @@ const pagination = ref({
   sortBy: 'name',
   descending: false,
   page: 1,
-  rowsPerPage: 4
+  rowsPerPage: 5
 })
 
 const pagesNumber = computed(() => {
@@ -223,26 +225,3 @@ const pagesNumber2 = computed(() => {
 })()
 
 </script>
-
-<style>
-.q-textarea .q-field__native {
-  resize: none;
-}
-.q-table tr td:nth-child(1) {
-  width: 5%;
-}
-.q-table tr td:nth-child(2) {
-  width: 10%;
-}
-.q-table tr td:nth-child(3) {
-  width: 20%;
-}
-.q-table tr td:nth-child(4) {
-  width: 20%;
-  white-space:normal;
-}
-.q-table tr td:nth-child(5) {
-  width: 40%;
-  white-space:normal;
-}
-</style>

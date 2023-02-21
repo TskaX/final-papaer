@@ -1,14 +1,14 @@
 <template>
-  <q-layout q-layout view="hHh lpR fff" id="setting">
+  <q-layout q-layout view="hHh lpR fff">
     <q-header elevated class="bg-accent">
       <q-toolbar>
         <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-        <q-toolbar-title>管理</q-toolbar-title>
+        <q-toolbar-title>會員管理</q-toolbar-title>
         <q-btn icon="logout" @click="logout"></q-btn>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true" :width="200" :breakpoint="400" bordered class="bg-grey-2">
+    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true" :width="200" :breakpoint="600" bordered class="bg-grey-2">
       <q-list padding>
         <q-item clickable v-ripple to='/setting' exact>
           <q-item-section avatar>

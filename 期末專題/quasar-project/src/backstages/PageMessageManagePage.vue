@@ -1,7 +1,6 @@
 <template>
-  <q-btn label="新增訊息" @click="openDialog(0)"></q-btn>
-
-  <div class="q-pa-md">
+  <div class="q-pa-md" id="pageMessageManage">
+    <q-btn label="新增訊息" @click="openDialog(0)" class="add"></q-btn>
     <q-table
       title="頁面消息管理"
       :rows="rows"
@@ -18,12 +17,12 @@
     </template>
     <template v-slot:body-cell-button="props">
       <td>
-        <q-btn icon="fa-solid fa-wrench" @click="openDialog(1,props.row._id)"></q-btn>
+        <q-btn icon="fa-solid fa-pen-to-square" @click="openDialog(1,props.row._id)"></q-btn>
         <q-btn icon="fa-solid fa-trash" @click="openDelete(props.row._id)"></q-btn>
       </td>
     </template>
     <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+        <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -38,32 +37,35 @@
     />
   </div>
 
-  <q-dialog v-model="form.dialog" persistent>
+  <q-dialog v-model="form.dialog" persistent class="pageMessageManage-dialog">
     <q-card>
+      <q-card-section class="pageMessageManage-title">
+        <div>修改頁面消息</div>
+      </q-card-section>
       <q-form @submit="submit">
-        <q-card-section>
+        <q-card-section class="pageMessageManage-main">
           <div class="row">
             <div class="col-12">主題
-              <q-input outlined v-model="form.title" type="text" ></q-input>
+              <q-input outlined v-model="form.title" type="text" :rules="[rules.required]"></q-input>
             </div>
             <div class="col-12">內容
-              <q-input outlined type="textarea" v-model="form.content"></q-input>
-            </div>
-            <div class="col-12">
-              <q-btn type="submit" label="確認"></q-btn>
-              <q-btn v-close-popup label="取消"></q-btn>
+              <q-input outlined type="textarea" v-model="form.content" :rules="[rules.required]"></q-input>
             </div>
           </div>
+        </q-card-section>
+        <q-card-section class="pageMessageManage-btn">
+          <q-btn type="submit" label="確認"></q-btn>
+          <q-btn v-close-popup label="取消"></q-btn>
         </q-card-section>
       </q-form>
     </q-card>
   </q-dialog>
-  <q-dialog v-model="formDelete.dialog" persistent>
+  <q-dialog v-model="formDelete.dialog" persistent class="pageMessageDelete-dialog">
     <q-card>
-      <q-card-section>
+      <q-card-section class="pageMessageDelete-title">
         <div class="text-h6">你即將刪除該消息</div>
       </q-card-section>
-      <q-card-section>
+      <q-card-section class="pageMessageDelete-btn">
         <q-btn label="確認刪除" @click="deleteMsg()"></q-btn>
         <q-btn label="取消刪除" v-close-popup></q-btn>
       </q-card-section>
@@ -75,6 +77,12 @@
 import { apiAuth } from 'src/boot/axios'
 import Swal from 'sweetalert2'
 import { reactive, ref, computed } from 'vue'
+
+const rules = {
+  required (value) {
+    return !!value || '欄位必填'
+  }
+}
 
 const date = new Date()
 const day = date.getDate()
