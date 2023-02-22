@@ -61,15 +61,13 @@
         size="sm"
       />
     </div>
-    <q-dialog v-model="form.dialog">
+    <q-dialog v-model="form.dialog" class="question-dialog">
       <q-card>
         <q-form @submit="submit" @reset="reset">
-          <q-card-section class="row items-center q-pb-none">
-            <div class="text-h6">問題發問</div>
-            <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
+          <q-card-section class="row question-title">
+            <div>問題發問</div>
           </q-card-section>
-          <q-card-section>
+          <q-card-section class="question-main">
             <div class="row">
               <div class="col-5">主旨
                 <q-input outlined v-model="form.title" :rules="[rules.required]"></q-input>
@@ -81,9 +79,11 @@
               <div class="col-12">描述問題
                 <q-input outlined type="textarea" v-model="form.content" :rules="[rules.required]"></q-input>
               </div>
-              <q-btn label="發送" type="submit"></q-btn>
-              <q-btn label="重寫" type="reset"></q-btn>
             </div>
+          </q-card-section>
+          <q-card-section class="question-btn">
+            <q-btn label="發送" type="submit"></q-btn>
+            <q-btn v-close-popup label="取消"/>
           </q-card-section>
         </q-form>
       </q-card>
@@ -131,12 +131,6 @@ const submit = async () => {
     })
   }
   form.dialog = false
-}
-
-const reset = () => {
-  form.title = ''
-  form.time = ''
-  form.content = ''
 }
 
 const filter = ref('')

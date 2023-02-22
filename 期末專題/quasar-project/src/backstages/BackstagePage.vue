@@ -44,9 +44,6 @@
       <q-form @submit="submit">
         <q-card-section class="setting-main">
           <div class="row">
-            <div class="col-12">帳號
-              <q-input outlined v-model="form.account" type="text" :rules="[rules.required]" disable></q-input>
-            </div>
             <div class="col-12">姓名
               <q-input outlined v-model="form.name" type="text" :rules="[rules.required]"></q-input>
             </div>
@@ -90,7 +87,6 @@ const rules = {
 
 const form = reactive({
   _id: '',
-  account: '',
   name: '',
   email: '',
   phone: '',
@@ -131,7 +127,6 @@ function openDialog (id) {
   const index = rows.findIndex(el => el._id === id)
   form._id = rows[index]._id
   form.name = rows[index].name
-  form.account = rows[index].account
   form.email = rows[index].email
   form.phone = rows[index].phone
   form.birth = rows[index].birth
@@ -144,7 +139,6 @@ const submit = async () => {
   form.loading = true
   const fd = new FormData()
   fd.append('name', form.name)
-  fd.append('account', form.account)
   fd.append('email', form.email)
   fd.append('phone', form.phone)
   fd.append('birth', form.birth)

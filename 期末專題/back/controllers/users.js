@@ -144,7 +144,6 @@ export const editPartner = async (req, res) => {
   try {
     const result = await users.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
-      account: req.body.account,
       email: req.body.email,
       pic: req.file?.path,
       phone: req.body.phone,
@@ -173,7 +172,6 @@ export const editPartner = async (req, res) => {
 export const getAllPartner = async (req, res) => {
   try {
     const result = await users.find({ partner: 1, available: 1 })
-    console.log(result)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })

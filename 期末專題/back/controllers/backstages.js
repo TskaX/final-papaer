@@ -15,7 +15,6 @@ export const editUser = async (req, res) => {
   try {
     const result = await users.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
-      account: req.body.account,
       email: req.body.email,
       pic: req.file?.path,
       phone: req.body.phone,

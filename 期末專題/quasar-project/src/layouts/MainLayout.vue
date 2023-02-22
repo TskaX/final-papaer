@@ -1,22 +1,26 @@
 <template>
   <q-layout view="hHh lpR fff" id="front-layout">
-    <q-header elevated class="bg-transparent text-black" height-hint="98">
+    <q-header elevated class="text-black" height-hint="98">
       <q-toolbar>
         <div class="logo">
           <q-btn icon="egg" to="/" label="友伴"></q-btn>
         </div>
-        <q-toolbar-title></q-toolbar-title>
-        <q-btn @click="drawerRight = false" icon="fa-solid fa-arrow-right" class="burger-icon" v-if="drawerRight === true"/>
-        <q-btn @click="drawerRight = true" icon="fa-solid fa-arrow-left" class="burger-icon" v-if="drawerRight === false"/>
+        <q-toolbar-title>
+          <q-btn @click.prevent="anchor('partner-intro')">公司理念</q-btn>
+          <q-btn>夥伴介紹</q-btn>
+          <q-btn>聯繫我們</q-btn>
+        </q-toolbar-title>
+        <q-btn @click="oppt" icon="fa-solid fa-arrow-left" class="burger-icon" v-if="drawerRight === false" />
+        <q-btn @click="oppt" icon="fa-solid fa-arrow-right" class="burger-icon" v-if="drawerRight === true" />
       </q-toolbar>
-      <q-drawer show-if-above v-model="drawerRight" side="right" bordered :width="100" :breakpoint="100" >
+      <div class="side-nav">
         <div v-if="isLogin">Hi，{{ user.name }}</div>
         <q-btn v-if="!isLogin" to="/login" label="Login" />
         <q-btn v-if="!isLogin" to="/register" label="Register" />
         <q-btn v-if="isLogin" to="/setting" label="setting" />
-        <q-btn v-if="isLogin && isAdmin" to="/backstage"  label="backstage" />
-        <q-btn v-if="isLogin" to="/" label="logout" @click="logout"/>
-      </q-drawer>
+        <q-btn v-if="isLogin && isAdmin" to="/backstage" label="backstage" />
+        <q-btn v-if="isLogin" to="/" label="logout" @click="logout" />
+      </div>
     </q-header>
 
     <q-page-container style="padding-top:0">
@@ -41,5 +45,20 @@ const user = useUserStore()
 const { isLogin, isAdmin } = storeToRefs(user)
 const { logout } = user
 
-const drawerRight = ref(false)
+const anchor = (name) => {
+  const anchorEl = document.getElementById(name)
+  if (anchorEl) anchorEl.scrollIntoView()
+}
+
+const drawerRight = ref(true)
+const oppt = () => {
+  const sideNav = document.querySelector('.side-nav')
+  if (drawerRight.value === true) {
+    sideNav.style.cssText = 'display: none'
+    drawerRight.value = false
+  } else {
+    sideNav.style.cssText = 'display: block'
+    drawerRight.value = true
+  }
+}
 </script>

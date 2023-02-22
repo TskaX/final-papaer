@@ -41,20 +41,18 @@
     <q-dialog v-model="form.dialog" persistent class="partner-dialog">
       <q-card>
         <q-card-section class="partner-title">
-          <div>夥伴資料修改</div>
+          <div v-if="form._id.length === 0">夥伴資料新增</div>
+          <div v-else>夥伴資料修改</div>
         </q-card-section>
         <q-form @submit="submit">
           <q-card-section class="partner-main">
             <div class="row">
-              <div class="col-5">帳號
+              <div class="col-5" v-if="form._id.length === 0">帳號
                 <q-input outlined v-model="form.account" type="text" :rules="[rules.required]"></q-input>
               </div>
-              <div class="col-1"></div>
+              <div class="col-1" v-if="form._id.length === 0"></div>
               <div class="col-5" v-if="form._id.length === 0">密碼
                 <q-input outlined v-model="form.password" type="text" :rules="[rules.required]"></q-input>
-              </div>
-              <div class="col-5" v-if="form._id.length !== 0" disabled>密碼
-                <q-input outlined label="*******" type="text"></q-input>
               </div>
               <div class="col-5">姓名
                 <q-input outlined v-model="form.name" type="text" :rules="[rules.required]"></q-input>

@@ -1,16 +1,11 @@
 <template>
   <q-page class="flex flex-center" style="min-height:100%" id="front-main">
-    <div class="background">
+    <div class="video">
       <video autoplay muted loop id="myVideo">
-      <source src="../assets/video1.mp4" type="video/mp4">
-    </video>
-    </div>
-    <div class="toolbar" style="height: 80px ">
-      <a href="#">TOP</a>
-      <a href="#container-A">About Us</a>
-      <a href="#partner-intro">夥伴介紹</a>
-      <a href="#">Contact Us</a>
-      <a href="#">Advise Us</a>
+        <source src="../assets/video2.mp4" type="video/mp4">
+      </video>
+      <div class="sloganA">寂寞不簡單</div>
+      <div class="sloganB">簡單不寂寞</div>
     </div>
     <div id="container-A">
       <h1>About Us</h1>
@@ -19,30 +14,21 @@
     <div id="partner-intro">
       <div class="container">
         <h1>選擇一個你喜歡的夥伴</h1>
-        <swiper
-          :slidesPerView="1"
-          :spaceBetween="30"
-          :loop="true"
-          :navigation="true"
-          :pagination="{
-            clickable: true,
-          }"
-          :breakpoints="{
-            '600': {
-              slidesPerView: 1,
-            },
-            '1024': {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            '1440': {
-              slidesPerView: 3,
-              spaceBetween: 30,
-            },
-          }"
-          :modules="modules"
-          class="mySwiper"
-        >
+        <swiper :slidesPerView="1" :spaceBetween="30" :loop="true" :navigation="true" :pagination="{
+          clickable: true,
+        }" :breakpoints="{
+  '600': {
+    slidesPerView: 1,
+  },
+  '1024': {
+    slidesPerView: 2,
+    spaceBetween: 20,
+  },
+  '1440': {
+    slidesPerView: 3,
+    spaceBetween: 30,
+  },
+}" :modules="modules" class="mySwiper">
           <!-- :autoplay="{
             delay: 5000,
             disableOnInteraction: false,
@@ -56,16 +42,18 @@
                 <div class="worker-personal">個性：{{ row.personal }}</div>
                 <div class="worker-hobby">興趣：{{ row.hobby }}</div>
                 <div class="worker-word">給大家的一句話：{{ row.word }}</div>
-                <q-btn label="預約" @click="openDialog(row._id)" v-if="user.isLogin" ></q-btn>
+                <q-btn label="預約" @click="openDialog(row._id)" v-if="user.isLogin"></q-btn>
               </q-card-section>
               <marquee scrolldelay="80" scrollamount="3">
-                <span v-for="message in row.reply" :key="message._id">{{ message.reply }}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span v-for="message in row.reply" :key="message._id">{{
+                  message.reply
+                }}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </span>
               </marquee>
             </q-card>
           </swiper-slide>
         </swiper>
-    </div>
+      </div>
       <q-dialog v-model="form.dialog">
         <q-card>
           <q-card-section>
@@ -89,7 +77,8 @@
                 <q-input outlined v-model="user.email" disable></q-input>
               </div>
             </div>
-            <br/><hr>
+            <br />
+            <hr>
           </q-card-section>
           <q-card-section>
             <div class="row justify-center">
@@ -243,11 +232,10 @@ const rows = reactive([]);
 
 <style>
 @media (min-width: 600px) {
-  .q-dialog__inner--minimized > div {
+  .q-dialog__inner--minimized>div {
     max-width: none;
   }
 }
-
 </style>
 
 <!-- <q-card v-for="row in rows" :key="row._id">

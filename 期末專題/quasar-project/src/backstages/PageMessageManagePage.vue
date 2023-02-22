@@ -40,7 +40,8 @@
   <q-dialog v-model="form.dialog" persistent class="pageMessageManage-dialog">
     <q-card>
       <q-card-section class="pageMessageManage-title">
-        <div>修改頁面消息</div>
+        <div v-if="form._id.length === 0">頁面消息新增</div>
+        <div v-else>頁面消息修改</div>
       </q-card-section>
       <q-form @submit="submit">
         <q-card-section class="pageMessageManage-main">

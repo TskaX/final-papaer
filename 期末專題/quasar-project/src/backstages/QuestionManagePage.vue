@@ -40,9 +40,9 @@
               <q-form @submit="submit(props.row._id)" @reset="reset(props.row._id)">
                 <div class="row">
                   <div class="col-10">
-                    <q-input type="text" v-model="props.row.replyContent" ></q-input>
+                    <q-input type="text" v-model="props.row.replyContent"  label="回覆"></q-input>
                   </div>
-                  <div class="col-2">
+                  <div class="col-2 confirm-btn">
                     <q-btn type="submit" label="確認回覆"></q-btn>
                     <q-btn type="reset" label="取消回覆" @click="props.expand = false"></q-btn>
                   </div>
@@ -172,16 +172,22 @@ const columns = reactive([
     field: row => row.title
   },
   {
+    name: 'content',
+    label: '內容',
+    align: 'left',
+    field: row => row.content
+  },
+  {
     name: 'time',
     label: '聯絡時間',
     align: 'left',
     field: row => row.time
   },
   {
-    name: 'content',
-    label: '內容',
+    name: 'phone',
+    label: '電話',
     align: 'left',
-    field: row => row.content
+    field: row => '0' + row.u_id.phone
   }
 ])
 

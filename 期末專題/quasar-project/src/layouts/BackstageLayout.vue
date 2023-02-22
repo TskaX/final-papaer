@@ -31,7 +31,15 @@
             <q-icon name="book_online" />
           </q-item-section>
           <q-item-section>
-            訂單管理
+            預約管理
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple to="/questionManage">
+          <q-item-section avatar>
+            <q-icon name="question_answer" />
+          </q-item-section>
+          <q-item-section>
+            問題管理
           </q-item-section>
         </q-item>
         <q-item clickable v-ripple to="/pageMessageManage">
@@ -40,14 +48,6 @@
           </q-item-section>
           <q-item-section>
             頁面訊息管理
-          </q-item-section>
-        </q-item>
-        <q-item clickable v-ripple to="/questionManage">
-          <q-item-section avatar>
-            <q-icon name="question_answer" />
-          </q-item-section>
-          <q-item-section>
-            意見/問題管理
           </q-item-section>
         </q-item>
         <q-item clickable v-ripple to="/">

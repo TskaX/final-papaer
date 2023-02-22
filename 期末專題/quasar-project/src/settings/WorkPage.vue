@@ -51,9 +51,9 @@
               <q-form @submit="submitAppointment(props.row._id)" @reset="reset(props.row._id)">
                 <div class="row">
                   <div class="col-10">
-                    <q-input type="text" v-model="props.row.p_reply" ></q-input>
+                    <q-input type="text" v-model="props.row.p_reply" label="回覆"></q-input>
                   </div>
-                  <div class="col-2">
+                  <div class="col-2 confirm-btn">
                     <q-btn type="submit" label="確認回覆"></q-btn>
                     <q-btn type="reset" label="取消回覆" @click="props.expand = false"></q-btn>
                   </div>
