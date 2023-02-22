@@ -1,11 +1,14 @@
 <template>
   <q-page class="flex flex-center" style="min-height:100%" id="front-main">
     <div class="background">
+      <video autoplay muted loop id="myVideo">
+      <source src="../assets/video1.mp4" type="video/mp4">
+    </video>
     </div>
     <div class="toolbar" style="height: 80px ">
       <a href="#">TOP</a>
       <a href="#container-A">About Us</a>
-      <a href="#container-B">Partner Intro</a>
+      <a href="#partner-intro">夥伴介紹</a>
       <a href="#">Contact Us</a>
       <a href="#">Advise Us</a>
     </div>
@@ -13,29 +16,56 @@
       <h1>About Us</h1>
       <div class="column"></div>
     </div>
-    <div id="container-B">
-      <h1>Partner Intro</h1>
-      <swiper
-    :slidesPerView="3"
-    :spaceBetween="30"
-    :pagination="{
-      clickable: true,
-    }"
-    :modules="modules"
-    class="mySwiper"
-  >
-    <swiper-slide>Slide 1</swiper-slide>
-    <swiper-slide>Slide 2</swiper-slide><swiper-slide>Slide 3</swiper-slide>
-    <swiper-slide>Slide 4</swiper-slide><swiper-slide>Slide 5</swiper-slide>
-    <swiper-slide>Slide 6</swiper-slide><swiper-slide>Slide 7</swiper-slide>
-    <swiper-slide>Slide 8</swiper-slide><swiper-slide>Slide 9</swiper-slide>
-  </swiper>
-      <q-card v-for="row in rows" :key="row._id">
-        <q-card-section>
-          <q-img :src="row.pic"></q-img>
-          <q-btn label="預約" @click="openDialog(row._id)"></q-btn>
-        </q-card-section>
-      </q-card>
+    <div id="partner-intro">
+      <div class="container">
+        <h1>選擇一個你喜歡的夥伴</h1>
+        <swiper
+          :slidesPerView="1"
+          :spaceBetween="30"
+          :loop="true"
+          :navigation="true"
+          :pagination="{
+            clickable: true,
+          }"
+          :breakpoints="{
+            '600': {
+              slidesPerView: 1,
+            },
+            '1024': {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            '1440': {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+          }"
+          :modules="modules"
+          class="mySwiper"
+        >
+          <!-- :autoplay="{
+            delay: 5000,
+            disableOnInteraction: false,
+          }" -->
+          <swiper-slide v-for="row in rows" :key="row._id">
+            <q-img src="https://i.imgur.com/BU86Ps7.png" class="arrow"></q-img>
+            <q-card>
+              <q-img :src="row.pic" class="worker-pic"></q-img>
+              <q-card-section>
+                <div class="worker-name">{{ row.name }}</div>
+                <div class="worker-personal">個性：{{ row.personal }}</div>
+                <div class="worker-hobby">興趣：{{ row.hobby }}</div>
+                <div class="worker-word">給大家的一句話：{{ row.word }}</div>
+                <q-btn label="預約" @click="openDialog(row._id)" v-if="user.isLogin" ></q-btn>
+              </q-card-section>
+              <marquee scrolldelay="80" scrollamount="3">
+                <span v-for="message in row.reply" :key="message._id">{{ message.reply }}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </span>
+              </marquee>
+            </q-card>
+          </swiper-slide>
+        </swiper>
+    </div>
       <q-dialog v-model="form.dialog">
         <q-card>
           <q-card-section>
@@ -118,9 +148,10 @@ import { useRouter } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import { Pagination } from 'swiper'
+import 'swiper/css/navigation'
+import { Pagination, Navigation } from 'swiper'
 
-const modules = [Pagination]
+const modules = [Pagination, Navigation]
 const router = useRouter()
 const user = useUserStore()
 const getDate = new Date()
@@ -217,34 +248,11 @@ const rows = reactive([]);
   }
 }
 
-.swiper {
-  width: 100vw;
-  height: 100vh;
-}
-
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 </style>
 
-<!-- <div class="q-pa-md">
-        <q-carousel
-          animated
-          v-model="slide"
-          navigation
-          infinite
-          :autoplay="autoplay"
-          arrows
-          transition-prev="slide-right"
-          transition-next="slide-left"
-          @mouseenter="autoplay = false"
-          @mouseleave="autoplay = true"
-        >
-        <q-carousel-slide v-for="row in rows" :key="row._id" :name="row" :img-src="row.pic" />
-        </q-carousel>
-      </div>
-     -->
+<!-- <q-card v-for="row in rows" :key="row._id">
+  <q-card-section>
+    <q-img :src="row.pic"></q-img>
+    <q-btn label="預約" @click="openDialog(row._id)"></q-btn>
+  </q-card-section>
+</q-card> -->

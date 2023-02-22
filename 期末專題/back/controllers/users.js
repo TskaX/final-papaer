@@ -123,7 +123,10 @@ export const addPartner = async (req, res) => {
       phone: req.body.phone,
       birth: req.body.birth,
       pic: req.file?.path,
-      partner: req.body.partner
+      partner: req.body.partner,
+      word: req.body.word,
+      hobby: req.body.hobby,
+      personal: req.body.personal
     })
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
@@ -145,7 +148,10 @@ export const editPartner = async (req, res) => {
       email: req.body.email,
       pic: req.file?.path,
       phone: req.body.phone,
-      birth: req.body.birth
+      birth: req.body.birth,
+      word: req.body.word,
+      hobby: req.body.hobby,
+      personal: req.body.personal
     }, { new: true })
     await req.user.save()
     if (!result) {
@@ -166,7 +172,8 @@ export const editPartner = async (req, res) => {
 
 export const getAllPartner = async (req, res) => {
   try {
-    const result = await users.find({ partner: 1 })
+    const result = await users.find({ partner: 1, available: 1 })
+    console.log(result)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
@@ -262,6 +269,10 @@ export const replyAppointment = async (req, res) => {
       u_reply: req.body.u_reply,
       u_replyStatus: req.body.u_replyStatus
     }, { new: true })
+    req.user.reply.push({
+      u_id: req.user._id,
+      reply: req.body.u_reply
+    })
     await req.user.save()
     if (!result) {
       res.status(404).json({ success: false, message: '找不到預約' })

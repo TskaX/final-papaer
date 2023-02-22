@@ -46,25 +46,41 @@
         <q-form @submit="submit">
           <q-card-section class="partner-main">
             <div class="row">
-              <div class="col-12">帳號
-                <q-input outlined v-model="form.account" type="text" :rules="[rules.required]" disable></q-input>
+              <div class="col-5">帳號
+                <q-input outlined v-model="form.account" type="text" :rules="[rules.required]"></q-input>
               </div>
-              <div class="col-12" v-if="form._id.length === 0">密碼
+              <div class="col-1"></div>
+              <div class="col-5" v-if="form._id.length === 0">密碼
                 <q-input outlined v-model="form.password" type="text" :rules="[rules.required]"></q-input>
               </div>
-              <div class="col-12">姓名
+              <div class="col-5" v-if="form._id.length !== 0" disabled>密碼
+                <q-input outlined label="*******" type="text"></q-input>
+              </div>
+              <div class="col-5">姓名
                 <q-input outlined v-model="form.name" type="text" :rules="[rules.required]"></q-input>
               </div>
-              <div class="col-12">信箱
-                <q-input outlined v-model="form.email" type="text" :rules="[rules.required]"></q-input>
-              </div>
-              <div class="col-12">電話
+              <div class="col-1"></div>
+              <div class="col-5">電話
                 <q-input outlined v-model="form.phone" type="text" :rules="[rules.required]"></q-input>
               </div>
-              <div class="col-12">生日
+              <div class="col-5">生日
                 <q-input outlined v-model="form.birth" type="text" :rules="[rules.required]"></q-input>
               </div>
-              <div class="col-12">照片
+              <div class="col-1"></div>
+              <div class="col-5">個性
+                <q-input outlined v-model="form.personal" type="text" :rules="[rules.required]"></q-input>
+              </div>
+              <div class="col-5">興趣
+                <q-input outlined v-model="form.hobby" type="text" :rules="[rules.required]"></q-input>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-5">給會員的一句話
+                <q-input outlined v-model="form.word" type="text" :rules="[rules.required]"></q-input>
+              </div>
+              <div class="col-11">信箱
+                <q-input outlined v-model="form.email" type="text" :rules="[rules.required]"></q-input>
+              </div>
+              <div class="col-11">照片
                 <br>
                 <q-img :src="form.pic"  style="height: 90px; width:140px"></q-img>
                 <q-file filled v-model="form.pic" label="連結照片位址"></q-file>
@@ -102,6 +118,9 @@ const form = reactive({
   email: '',
   phone: '',
   birth: '',
+  word: '',
+  hobby: '',
+  personal: '',
   pic: undefined,
   dialog: false,
   partner: 1,
@@ -120,6 +139,9 @@ const openDialog = (idx, id) => {
     form.pic = undefined
     form.dialog = true
     form.loading = false
+    form.word = ''
+    form.hobby = ''
+    form.personal = ''
   } else {
     form.account = rows[index].account
     form._id = rows[index]._id
@@ -130,6 +152,9 @@ const openDialog = (idx, id) => {
     form.pic = rows[index].pic
     form.dialog = true
     form.loading = false
+    form.word = rows[index].word
+    form.hobby = rows[index].hobby
+    form.personal = rows[index].personal
   }
 }
 
@@ -147,10 +172,10 @@ const columns = reactive([
     field: row => row.name
   },
   {
-    name: 'email',
-    label: '信箱',
+    name: 'birth',
+    label: '生日',
     align: 'left',
-    field: row => row.email
+    field: row => row.birth
   },
   {
     name: 'phone',
@@ -159,10 +184,28 @@ const columns = reactive([
     field: row => row.phone
   },
   {
-    name: 'birth',
-    label: '生日',
+    name: 'personal',
+    label: '個性',
     align: 'left',
-    field: row => row.birth
+    field: row => row.personal
+  },
+  {
+    name: 'hobby',
+    label: '興趣',
+    align: 'left',
+    field: row => row.hobby
+  },
+  {
+    name: 'word',
+    label: '給會員的話',
+    align: 'left',
+    field: row => row.word
+  },
+  {
+    name: 'email',
+    label: '信箱',
+    align: 'left',
+    field: row => row.email
   },
   {
     name: 'pic',
@@ -215,6 +258,9 @@ const submit = async () => {
   fd.append('birth', form.birth)
   fd.append('pic', form.pic)
   fd.append('partner', form.partner)
+  fd.append('word', form.word)
+  fd.append('hobby', form.hobby)
+  fd.append('personal', form.personal)
   try {
     if (form._id.length === 0) {
       const { data } = await apiAuth.post('/users/partner', fd)

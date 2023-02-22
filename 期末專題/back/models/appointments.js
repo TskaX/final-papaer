@@ -72,6 +72,7 @@ const appointmentSchema = new Schema({
   },
   p_id: {
     type: ObjectId,
+    ref: 'users',
     required: [true, '缺少工作人員']
   },
   thumb: {

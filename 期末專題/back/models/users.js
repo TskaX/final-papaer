@@ -1,6 +1,18 @@
-import { Schema, model, Error } from 'mongoose'
+import { Schema, model, Error, ObjectId } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcrypt'
+
+const replySchema = new Schema({
+  u_id: {
+    type: ObjectId,
+    ref: 'appointments',
+    required: [true, '缺少預約']
+  },
+  reply: {
+    type: String,
+    required: [true, '缺少留言']
+  }
+})
 
 const schema = new Schema({
   account: {
@@ -60,6 +72,22 @@ const schema = new Schema({
   partner: {
     type: Number,
     default: 0
+  },
+  hobby: {
+    type: String,
+    default: '嘗試新事物'
+  },
+  personal: {
+    type: String,
+    default: ''
+  },
+  word: {
+    type: String,
+    default: ''
+  },
+  reply: {
+    type: [replySchema],
+    default: []
   }
 }, { versionKey: false })
 

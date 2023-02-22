@@ -133,7 +133,7 @@ import Swal from 'sweetalert2'
 const filter = ref('')
 const rows = reactive([])
 const showMessage = (reply) => {
-  if (reply === '已結束') {
+  if (reply === '預約結束') {
     return true
   } else {
     return false
