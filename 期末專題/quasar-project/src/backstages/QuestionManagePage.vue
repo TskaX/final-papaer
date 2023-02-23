@@ -1,8 +1,10 @@
 <template>
   <div id="question-manage">
-    <div class="q-pa-md" >
+    <q-btn class="today add" label="尚未回覆" @click="openQuestion(1)"></q-btn>
+    <q-btn class="done add" label="已回覆" @click="openQuestion(0)"></q-btn>
+    <div class="q-pa-md none-reply" >
       <q-table
-        title="尚未回覆"
+        title="問題管理 - 尚未回覆"
         :rows="rows"
         :columns="columns"
         v-model:pagination="pagination"
@@ -67,9 +69,9 @@
       />
     </div>
 
-    <div class="q-pa-md">
+    <div class="q-pa-md done-reply">
       <q-table
-        title="已回覆"
+        title="問題管理 - 已回覆"
         :rows="rows2"
         :columns="columns"
         v-model:pagination="pagination2"
@@ -134,6 +136,18 @@ const filter = ref('')
 const rows = reactive([])
 const rows2 = reactive([])
 
+const openQuestion = (idx) => {
+  const noneReply = document.querySelector('.none-reply')
+  const doneReply = document.querySelector('.done-reply')
+  if (idx === 0) {
+    noneReply.style.cssText = 'display: none'
+    doneReply.style.cssText = 'display: block'
+  } else {
+    noneReply.style.cssText = 'display: block'
+    doneReply.style.cssText = 'display: none'
+  }
+}
+
 const submit = async (idx) => {
   const index = rows.findIndex(el => el._id === idx)
   rows[index].reply = 1
@@ -195,7 +209,7 @@ const pagination = ref({
   sortBy: 'name',
   descending: false,
   page: 1,
-  rowsPerPage: 5
+  rowsPerPage: 10
 })
 
 const pagesNumber = computed(() => {
@@ -206,7 +220,7 @@ const pagination2 = ref({
   sortBy: 'name',
   descending: false,
   page: 1,
-  rowsPerPage: 5
+  rowsPerPage: 10
 })
 
 const pagesNumber2 = computed(() => {

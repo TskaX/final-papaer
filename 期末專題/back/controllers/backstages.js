@@ -195,3 +195,35 @@ export const deleteAppointment = async (req, res) => {
     res.status(500).json({ success: false, message: '刪訊息未知錯誤' })
   }
 }
+
+export const editReply = async (req, res) => {
+  try {
+    const result = await appointments.findByIdAndUpdate(req.params.id, {
+      u_reply: req.body.u_reply,
+      p_reply: req.body.p_reply
+    }, { new: true })
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到該留言' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到789' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+export const getNews = async (req, res) => {
+  try {
+    const message = await messages.find()
+    const result = message.filter(el => el.title.length > 0)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}

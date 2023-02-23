@@ -1,8 +1,11 @@
 <template>
   <div id="appointment-manage">
-    <div class="q-pa-md">
+    <q-btn class="today add" label="當日預約" @click="openAppointment(1)"></q-btn>
+    <q-btn class="done add" label="所有預約" @click="openAppointment(0)"></q-btn>
+    <q-btn class="reply-check add" label="留言紀錄" @click="openAppointment(-1)"></q-btn>
+    <div class="q-pa-md today-appointment" >
       <q-table
-        title="當日預約"
+        title="預約管理 - 當日預約"
         :rows="rows"
         :columns="columns"
         v-model:pagination="pagination"
@@ -10,11 +13,6 @@
         :filter="filter"
         row-key="_id"
       >
-      <template v-slot:body-cell-pic="props">
-        <td>
-          <q-img :src="props.row.pic" style="height: 90px"></q-img>
-        </td>
-      </template>
       <template v-slot:body-cell-button="props">
         <td>
           <q-btn icon="fa-solid fa-pen-to-square" @click="openDialog(props.row._id)" v-if="props.row.done !== '已完成'"></q-btn>
@@ -31,9 +29,9 @@
       />
     </div>
 
-    <div class="q-pa-md">
+    <div class="q-pa-md all-appointment">
       <q-table
-        title="預約紀錄"
+        title="預約管理 - 所有預約"
         :rows="rows2"
         :columns="columns"
         v-model:pagination="pagination2"
@@ -41,11 +39,6 @@
         :filter="filter"
         row-key="_id"
       >
-      <template v-slot:body-cell-pic="props">
-        <td>
-          <q-img :src="props.row.pic" style="height: 90px"></q-img>
-        </td>
-      </template>
       <template v-slot:body-cell-button="props">
         <td>
           <q-btn icon="fa-solid fa-pen-to-square" @click="openDialog2(props.row._id)" v-if="props.row.done !=='已完成'"></q-btn>
@@ -58,6 +51,30 @@
         v-model="pagination2.page"
         color="grey-8"
         :max="pagesNumber2"
+        size="sm"
+      />
+    </div>
+
+    <div class="q-pa-md all-reply">
+      <q-table
+        title="預約管理 - 留言紀錄"
+        :rows="rows3"
+        :columns="columns2"
+        v-model:pagination="pagination3"
+        hide-pagination
+        :filter="filter"
+        row-key="_id"
+      >
+      <template v-slot:body-cell-button="props">
+        <td>
+          <q-btn icon="fa-solid fa-pen-to-square" @click="openReply(props.row._id)"></q-btn>
+        </td>
+      </template>
+      </q-table>
+      <q-pagination
+        v-model="pagination3.page"
+        color="grey-8"
+        :max="pagesNumber3"
         size="sm"
       />
     </div>
@@ -107,6 +124,29 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="formReply.dialog" persistent class="appointmentManage-dialog">
+      <q-card>
+        <q-card-section class="appointmentManage-title">
+          <div>編輯留言</div>
+        </q-card-section>
+        <q-form @submit="submitReply">
+          <q-card-section class="appointmentManage-main">
+            <div class="row">
+              <div class="col-12">會員留言
+                <q-input outlined v-model="formReply.u_reply" type="text"></q-input>
+              </div>
+              <div class="col-12">夥伴留言
+                <q-input outlined v-model="formReply.p_reply" type="text"></q-input>
+              </div>
+            </div>
+          </q-card-section>
+          <q-card-section class="appointmentManage-btn">
+            <q-btn type="submit" label="確認"></q-btn>
+            <q-btn v-close-popup label="取消"></q-btn>
+          </q-card-section>
+        </q-form>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script setup>
@@ -120,9 +160,30 @@ const rules = {
   }
 }
 
+const openAppointment = (idx) => {
+  const todayAppointment = document.querySelector('.today-appointment')
+  const allAppointment = document.querySelector('.all-appointment')
+  const allReply = document.querySelector('.all-reply')
+  if (idx === 0) {
+    todayAppointment.style.cssText = 'display: none'
+    allAppointment.style.cssText = 'display: block'
+    allReply.style.cssText = 'display: none'
+  } else if (idx === 1) {
+    todayAppointment.style.cssText = 'display: block'
+    allAppointment.style.cssText = 'display: none'
+    allReply.style.cssText = 'display: none'
+  } else {
+    todayAppointment.style.cssText = 'display: none'
+    allAppointment.style.cssText = 'display: none'
+    allReply.style.cssText = 'display: block'
+  }
+}
+
 const filter = ref('')
 const rows = reactive([])
 const rows2 = reactive([])
+let rows3 = reactive([])
+
 const form = reactive({
   _id: '',
   a_date: '',
@@ -141,6 +202,13 @@ const formDelete = reactive({
   time: '',
   date: '',
   place: '',
+  _id: ''
+})
+
+const formReply = reactive({
+  dialog: false,
+  u_reply: '',
+  p_reply: '',
   _id: ''
 })
 
@@ -231,11 +299,67 @@ const columns = reactive([
   }
 ])
 
+const columns2 = reactive([
+  {
+    name: 'date',
+    label: '預約紀錄日期',
+    align: 'left',
+    field: row => row.a_date.substring(0, 10)
+  },
+  {
+    name: 'member_account',
+    label: '會員帳號',
+    align: 'left',
+    field: row => row.account
+  },
+  {
+    name: 'member_name',
+    label: '會員名字',
+    align: 'left',
+    field: row => row.name
+  },
+  {
+    name: 'date',
+    label: '預約日期',
+    align: 'left',
+    field: row => row.date
+  },
+  {
+    name: 'time',
+    label: '預約時間',
+    align: 'left',
+    field: row => row.time
+  },
+  {
+    name: 'p_name',
+    label: '夥伴名字',
+    align: 'left',
+    field: row => row.p_name
+  },
+  {
+    name: 'u_reply',
+    label: '會員留言',
+    align: 'left',
+    field: row => row.u_reply
+  },
+  {
+    name: 'p_reply',
+    label: '夥伴留言',
+    align: 'left',
+    field: row => row.p_reply
+  },
+  {
+    name: 'button',
+    label: '',
+    align: 'left'
+  }
+])
+
 const pagination = ref({
   sortBy: 'name',
   descending: false,
   page: 1,
-  rowsPerPage: 5
+  rowsPerPage: 10
 })
 
 const pagesNumber = computed(() => {
@@ -246,11 +370,22 @@ const pagination2 = ref({
   sortBy: 'name',
   descending: false,
   page: 1,
-  rowsPerPage: 5
+  rowsPerPage: 10
 })
 
 const pagesNumber2 = computed(() => {
   return Math.ceil(rows2.length / pagination2.value.rowsPerPage)
+})
+
+const pagination3 = ref({
+  sortBy: 'name',
+  descending: false,
+  page: 1,
+  rowsPerPage: 10
+})
+
+const pagesNumber3 = computed(() => {
+  return Math.ceil(rows3.length / pagination3.value.rowsPerPage)
 })
 
 const openDialog = (id) => {
@@ -277,6 +412,14 @@ const openDialog2 = (id) => {
   form.p_name = rows2[index].p_name
   form.place = rows2[index].place
   form.dialog = true
+}
+
+const openReply = (id) => {
+  const index = rows3.findIndex(el => el._id === id)
+  formReply._id = rows3[index]._id
+  formReply.u_reply = rows3[index].u_reply
+  formReply.p_reply = rows3[index].p_reply
+  formReply.dialog = true
 }
 
 const submit = async () => {
@@ -313,16 +456,39 @@ const deleteMsg = async () => {
     })
   }
   formDelete.dialog = false
+}
+
+const submitReply = async () => {
+  try {
+    await apiAuth.patch('/backstages/editReply/' + formReply._id, formReply)
+    Swal.fire({
+      icon: 'success',
+      title: '成功',
+      text: '編輯留言成功'
+    })
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: '失敗',
+      text: '編輯留言失敗'
+    })
+  }
+  formReply.dialog = false
 };
 
 (async () => {
   try {
     const { data: all } = await apiAuth.get('/backstages/appointment')
     const { data: today } = await apiAuth.get('/backstages/TodayAppointment')
+    const { data: replyCheck } = await apiAuth.get('/backstages/appointment')
     all.result.reverse()
     today.result.reverse()
+    replyCheck.result.reverse()
     rows.push(...today.result)
     rows2.push(...all.result)
+    rows3.push(...replyCheck.result)
+    rows3 = rows3.filter(el => el.done === 2)
+    console.log(rows3)
     changeWordToday()
     changeWordAll()
   } catch (error) {

@@ -4,37 +4,65 @@
       <video autoplay muted loop id="myVideo">
         <source src="../assets/video2.mp4" type="video/mp4">
       </video>
-      <div class="sloganA">寂寞不簡單</div>
-      <div class="sloganB">簡單不寂寞</div>
+      <div class="sloganA"></div>
+      <div class="sloganB"></div>
     </div>
-    <div id="container-A">
-      <h1>About Us</h1>
-      <div class="column"></div>
+    <div id="about-us">
+      <h1>關於我們</h1>
+      <div class="row">
+        <div class="left">
+          <q-card>
+            <q-card-section>
+              開創想法
+            </q-card-section>
+            <q-card-section>
+              <div class="content">
+                在這科技越來越進步的年代，明明彼此間的距離因為科技拉近了，但卻也因此更冷漠。何時起，無時無刻我們總想著盯著手上那冰冷的螢幕，缺少了眼神間的交流。是不是偶爾想找個人出門吃飯逛街的時候，總是被推三阻四的，或是因為彼此的假期無法契合而作廢。是不是偶爾想找個人抒發情緒，暢談自己滿腹的牢騷，卻找不到朋友，也不想跟家人傾訴。
+              </div>
+              <br>
+              <div class="content">
+                「友伴」，就是在這樣的困擾中誕生了，前面所有的問題，都能靠它迎刃而解。好奇嗎？試試看就知道了！
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+        <div class="right">
+          <div class="q-pa-md">
+            <q-table
+              title="消息發送"
+              :rows="rowsNews"
+              :columns="columns"
+              row-key="_id"
+              hide-bottom
+              :pagination="initialPagination"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div id="partner-intro">
       <div class="container">
-        <h1>選擇一個你喜歡的夥伴</h1>
+        <h1>夥伴介紹</h1>
         <swiper :slidesPerView="1" :spaceBetween="30" :loop="true" :navigation="true" :pagination="{
           clickable: true,
         }" :breakpoints="{
-  '600': {
-    slidesPerView: 1,
-  },
-  '1024': {
-    slidesPerView: 2,
-    spaceBetween: 20,
-  },
-  '1440': {
-    slidesPerView: 3,
-    spaceBetween: 30,
-  },
-}" :modules="modules" class="mySwiper">
+            '600': {
+              slidesPerView: 1,
+            },
+            '1024': {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            '1440': {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+          }" :modules="modules" class="mySwiper">
           <!-- :autoplay="{
             delay: 5000,
             disableOnInteraction: false,
           }" -->
           <swiper-slide v-for="row in rows" :key="row._id">
-            <q-img src="https://i.imgur.com/BU86Ps7.png" class="arrow"></q-img>
             <q-card>
               <q-img :src="row.pic" class="worker-pic"></q-img>
               <q-card-section>
@@ -129,7 +157,7 @@
 </template>
 
 <script setup>
-import { apiAuth } from 'src/boot/axios'
+import { apiAuth, api } from 'src/boot/axios'
 import Swal from 'sweetalert2'
 import { reactive, ref } from 'vue'
 import { useUserStore } from '../stores/store'
@@ -139,6 +167,10 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import { Pagination, Navigation } from 'swiper'
+
+import { gsap } from 'gsap'
+import { TextPlugin } from 'gsap/TextPlugin'
+gsap.registerPlugin(TextPlugin)
 
 const modules = [Pagination, Navigation]
 const router = useRouter()
@@ -152,6 +184,33 @@ const rules = {
   required (value) {
     return !!value || '欄位必填'
   }
+}
+
+const columns = reactive([
+  {
+    name: 'date',
+    label: '發布日期',
+    align: 'left',
+    field: row => row.date
+  },
+  {
+    name: 'title',
+    label: '主旨',
+    align: 'left',
+    field: row => row.title
+  },
+  {
+    name: 'content',
+    label: '內容',
+    align: 'left',
+    field: row => row.content
+  }
+])
+
+const initialPagination = {
+  sortBy: 'desc',
+  page: 1,
+  rowsPerPage: 5
 }
 
 const addZeroFunction = () => {
@@ -222,11 +281,31 @@ const submit = async () => {
   }
 }
 
-const rows = reactive([]);
+const rows = reactive([])
+const rowsNews = reactive([]);
 
 (async () => {
   const { data } = await apiAuth.get('/users/partner')
+  const { data: news } = await api.get('/backstages/news')
   rows.push(...data.result)
+  news.result.reverse()
+  rowsNews.push(...news.result)
+
+  const sloganA = document.querySelector('.sloganA')
+  const sloganB = document.querySelector('.sloganB')
+  const tl = gsap.timeline({ delay: 1.5 })
+  tl.to(sloganA, {
+    duration: 1.5,
+    text: '寂寞不簡單',
+    ease: 'linear',
+    opacity: 1
+  })
+    .to(sloganB, {
+      duration: 1.5,
+      text: '簡單不寂寞',
+      ease: 'linear',
+      opacity: 1
+    })
 })()
 </script>
 

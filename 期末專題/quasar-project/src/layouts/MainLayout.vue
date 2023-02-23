@@ -6,8 +6,8 @@
           <q-btn icon="egg" to="/" label="友伴"></q-btn>
         </div>
         <q-toolbar-title>
-          <q-btn @click.prevent="anchor('partner-intro')">公司理念</q-btn>
-          <q-btn>夥伴介紹</q-btn>
+          <q-btn @click.prevent="anchor('about-us')">關於我們</q-btn>
+          <q-btn @click.prevent="anchor('partner-intro')">夥伴介紹</q-btn>
           <q-btn>聯繫我們</q-btn>
         </q-toolbar-title>
         <q-btn @click="oppt" icon="fa-solid fa-arrow-left" class="burger-icon" v-if="drawerRight === false" />
@@ -46,8 +46,11 @@ const { isLogin, isAdmin } = storeToRefs(user)
 const { logout } = user
 
 const anchor = (name) => {
-  const anchorEl = document.getElementById(name)
-  if (anchorEl) anchorEl.scrollIntoView()
+  const height = document.getElementById(name).offsetTop
+  window.scroll({
+    top: height,
+    behavior: 'smooth'
+  })
 }
 
 const drawerRight = ref(true)
