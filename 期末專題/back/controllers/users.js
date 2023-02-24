@@ -126,7 +126,7 @@ export const addPartner = async (req, res) => {
       partner: req.body.partner,
       word: req.body.word,
       hobby: req.body.hobby,
-      personal: req.body.personal
+      category: req.body.category
     })
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
@@ -150,7 +150,7 @@ export const editPartner = async (req, res) => {
       birth: req.body.birth,
       word: req.body.word,
       hobby: req.body.hobby,
-      personal: req.body.personal
+      category: req.body.category
     }, { new: true })
     await req.user.save()
     if (!result) {

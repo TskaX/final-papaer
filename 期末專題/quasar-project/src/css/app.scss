@@ -72,6 +72,25 @@
       }
     }
   }
+
+  #footer {
+    padding: 2rem;
+    .q-toolbar {
+      flex-direction: column;
+      justify-content: center;
+    }
+    .social {
+      padding: 1rem 0;
+      text-align: center;
+    }
+    .logo {
+      font-size: 1.1rem;
+      .q-btn {
+        font-size: 1.2rem;
+        color:white;
+      }
+    }
+  }
 }
 
 #front-main {
@@ -127,12 +146,26 @@
       font-size: 2.5rem;
       font-family: 'Noto Sans TC', sans-serif;
       font-weight: 400;
-      margin-top: 50px;
+      margin: 40px 0 10px 0;
     }
     .left {
-      .content {
-        font-size: 1.2rem;
-        padding: 0 20px;
+      margin: auto;
+      width: 83vw;
+      .q-card {
+        box-shadow: none;
+        border:1px solid $secondary;
+        .q-card__section {
+          padding: 16px 0;
+        }
+        .q-card__section:nth-child(1) {
+          background-color: $secondary;
+          font-size: 20px;
+          padding: 16px;
+        }
+        .content {
+          font-size: 1rem;
+          padding: 0 20px;
+        }
       }
     }
     .right {
@@ -186,6 +219,9 @@
     .container {
       height: 100%;
       text-align: center;
+      h1 {
+        color:$accent;
+      }
 
       .swiper {
         width: 80vw;
@@ -210,13 +246,16 @@
 
           .q-card {
             font-size: 0;
-            box-shadow:
-              5px 5px 5px rgb(154, 179, 176),
-              10px 10px 15px rgba(154, 179, 176, 0.7);
+            .q-card__section {
+              background-color: #F8F7DF;
+            }
 
             &:hover {
               scale: 1.1;
               transition: .5s;
+              box-shadow:
+              5px 5px 5px rgb(205,215,204),
+              10px 10px 15px rgba(205,215,204,0.7);
             }
 
             .worker-pic {
@@ -224,14 +263,13 @@
               width: 300px;
               height: 300px;
               object-fit: cover;
-              border-bottom: 5px solid $primary;
             }
 
             .worker-name {
               font-size: 30px;
               text-align: left;
               font-family: 'Noto Sans TC', sans-serif;
-              color: teal;
+              color: $accent;
               margin-bottom: 10px;
             }
 
@@ -241,12 +279,13 @@
               font-size: 1rem;
               text-align: left;
               font-family: 'Noto Sans TC', sans-serif;
-              color: teal;
+              color: $accent;
             }
 
             .q-btn {
               margin-top: 20px;
-              color: $accent;
+              background-color: $accent;
+              color: $secondary;
             }
 
             marquee {
@@ -257,6 +296,41 @@
             }
           }
         }
+      }
+    }
+  }
+
+  #contact-us {
+    background: url(../assets/bg.jpg) center/cover;
+    background-attachment:fixed;
+    height: 50vh;
+    width: 100vw;
+    display: flex;
+    .question {
+      width: 80vw;
+      height: 80%;
+      margin: auto;
+      background: rgba(0,0,0,0.12);
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        color:white;
+      }
+      .q-input {
+        width: 80%;
+        margin-bottom: 20px;
+        background-color: white;
+        border-radius: 5px;
+      }
+      .q-btn {
+        width: 100px;
+        text-align: center;
+        background-color: white;
+        margin-top: 15px;
       }
     }
   }
@@ -1214,6 +1288,11 @@
       .q-file {
         margin-top: 10px;
       }
+      .q-select {
+        .q-field__control {
+          height: 56px;
+        }
+      }
     }
 
     .partner-btn {
@@ -1661,6 +1740,11 @@
         }
       }
     }
+    #footer {
+      .company-content {
+        font-size: 1rem;
+      }
+    }
   }
   #front-main {
     .video {
@@ -1770,6 +1854,34 @@
 }
 
 @media (min-width: $breakpoint-md-min) {
+  #front-layout {
+    #footer {
+      .q-toolbar {
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-direction: row-reverse;
+        .company-content {
+          padding-top: 4rem;
+        }
+      }
+      .social {
+        padding: 1rem 0;
+        text-align: center;
+      }
+      .logo {
+        margin: 0 5rem;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.2rem;
+        justify-content: center;
+        text-align: center;
+        .q-btn {
+          font-size: 2.5rem;
+          color:white;
+        }
+      }
+    }
+  }
   #front-main {
     #partner-intro {
       h1 {
@@ -1800,6 +1912,12 @@
       }
       .right {
         margin: 80px auto 0;
+      }
+    }
+
+    #contact-us {
+      .question {
+        width: 60vw;
       }
     }
   }
@@ -1928,15 +2046,34 @@
     #about-us {
       h1 {
         font-size: 4rem;
+        margin-top: 50px;
       }
       .row {
         align-items: center;
+        height: 70%;
         .left {
           margin: auto;
           width: 40%;
+          .q-card__section:nth-child(1) {
+            font-size: 1.5rem;
+          }
+          .content {
+            font-size: 1.2rem;
+          }
         }
         .right {
+          margin: 60px auto;
           width: 40%;
+          .q-table__title {
+            font-size: 1.5rem;
+            padding:  6px;
+          }
+          .q-table th {
+            font-size: 1.2rem;
+          }
+          .q-table tbody td {
+            font-size: 1.2rem;
+          }
         }
       }
     }
@@ -1944,6 +2081,12 @@
       h1 {
         font-size: 3.5rem;
         padding-top: 20px;
+      }
+    }
+
+    #contact-us {
+      .question {
+        width: 50vw;
       }
     }
   }

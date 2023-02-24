@@ -77,9 +77,12 @@ const schema = new Schema({
     type: String,
     default: '嘗試新事物'
   },
-  personal: {
-    type: String,
-    default: ''
+  category: {
+    type: [String],
+    enum: {
+      values: ['運動', '遊戲', '逛街', '吃飯', '電影'],
+      message: '分類錯誤'
+    }
   },
   word: {
     type: String,

@@ -43,21 +43,26 @@
     <div id="partner-intro">
       <div class="container">
         <h1>夥伴介紹</h1>
-        <swiper :slidesPerView="1" :spaceBetween="30" :loop="true" :navigation="true" :pagination="{
-          clickable: true,
-        }" :breakpoints="{
-            '600': {
-              slidesPerView: 1,
-            },
-            '1024': {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            '1440': {
-              slidesPerView: 3,
-              spaceBetween: 30,
-            },
-          }" :modules="modules" class="mySwiper">
+        <q-btn label="全部" @click="changeCategory('all')"></q-btn>
+        <q-btn label="運動" @click="changeCategory('sport')"></q-btn>
+        <q-btn label="遊戲" @click="changeCategory('game')"></q-btn>
+        <q-btn label="吃飯" @click="changeCategory('eat')"></q-btn>
+        <q-btn label="電影" @click="changeCategory('movie')"></q-btn>
+        <q-btn label="逛街" @click="changeCategory('shopping')"></q-btn>
+        <swiper slides-per-view="1" :spaceBetween="30" :loop="true" :navigation="true" :observer="true"  :breakpoints="{
+          600: {
+            slidesPerView: 1,
+            spaceBetween: 20
+          },
+          1040: {
+            slidesPerView: 2,
+            spaceBetween: 30
+          },
+          1400: {
+            slidesPerView: 3,
+            spaceBetween: 30
+          }
+        }" :key="form.change" :modules="modules" class="mySwiper">
           <!-- :autoplay="{
             delay: 5000,
             disableOnInteraction: false,
@@ -67,7 +72,6 @@
               <q-img :src="row.pic" class="worker-pic"></q-img>
               <q-card-section>
                 <div class="worker-name">{{ row.name }}</div>
-                <div class="worker-personal">個性：{{ row.personal }}</div>
                 <div class="worker-hobby">興趣：{{ row.hobby }}</div>
                 <div class="worker-word">給大家的一句話：{{ row.word }}</div>
                 <q-btn label="預約" @click="openDialog(row._id)" v-if="user.isLogin"></q-btn>
@@ -84,30 +88,6 @@
       </div>
       <q-dialog v-model="form.dialog">
         <q-card>
-          <q-card-section>
-            <div class="row justify-center">
-              <div class="col-5">
-                <span>帳號</span>
-                <q-input outlined v-model="user.account" disable></q-input>
-              </div>
-              <div class="col-1"></div>
-              <div class="col-5">
-                <span>姓名</span>
-                <q-input outlined v-model="user.name" disable></q-input>
-              </div>
-              <div class="col-5">
-                <span>電話</span>
-                <q-input outlined v-model="user.phone" disable></q-input>
-              </div>
-              <div class="col-1"></div>
-              <div class="col-5">
-                <span>信箱</span>
-                <q-input outlined v-model="user.email" disable></q-input>
-              </div>
-            </div>
-            <br />
-            <hr>
-          </q-card-section>
           <q-card-section>
             <div class="row justify-center">
               <div class="col-5">
@@ -152,6 +132,14 @@
           </q-card-section>
         </q-card>
       </q-dialog>
+    </div>
+    <div id="contact-us">
+      <div class="question">
+        <h1>聯繫我們</h1>
+        <q-input label="電子信箱" outlined></q-input>
+        <q-input label="問題描述" outlined></q-input>
+        <q-btn dense unelevated type="submit" label="送出"></q-btn>
+      </div>
     </div>
   </q-page>
 </template>
@@ -213,6 +201,32 @@ const initialPagination = {
   rowsPerPage: 5
 }
 
+const changeCategory = (category) => {
+  if (category === 'shopping') {
+    rows = rows.filter(el => el.category.includes('逛街') === true)
+    form.change = 1
+  } else if (category === 'sport') {
+    rows = rowsOld
+    rows = rows.filter(el => el.category.includes('運動') === true)
+    form.change = 2
+  } else if (category === 'eat') {
+    rows = rowsOld
+    rows = rows.filter(el => el.category.includes('吃飯') === true)
+    form.change = 3
+  } else if (category === 'movie') {
+    rows = rowsOld
+    rows = rows.filter(el => el.category.includes('電影') === true)
+    form.change = 4
+  } else if (category === 'game') {
+    rows = rowsOld
+    rows = rows.filter(el => el.category.includes('遊戲') === true)
+    form.change = 5
+  } else if (category === 'all') {
+    rows = rowsOld
+    form.change = 6
+  }
+}
+
 const addZeroFunction = () => {
   if (month < 10) {
     month = month.padStart(2, '0')
@@ -244,7 +258,8 @@ const form = reactive({
   p_name: '',
   place: '',
   p_pic: '',
-  p_id: ''
+  p_id: '',
+  change: false
 })
 
 const openDialog = (id) => {
@@ -281,7 +296,8 @@ const submit = async () => {
   }
 }
 
-const rows = reactive([])
+let rows = reactive([])
+const rowsOld = reactive(rows)
 const rowsNews = reactive([]);
 
 (async () => {

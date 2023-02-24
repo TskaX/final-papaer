@@ -217,7 +217,6 @@ const pagesNumber = computed(() => {
 (async () => {
   try {
     const { data } = await apiAuth.get('/backstages')
-    console.log(data)
     rows.push(...data.result)
   } catch (error) {
     Swal.fire({

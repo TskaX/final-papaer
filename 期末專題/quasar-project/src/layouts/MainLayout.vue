@@ -8,7 +8,7 @@
         <q-toolbar-title>
           <q-btn @click.prevent="anchor('about-us')">關於我們</q-btn>
           <q-btn @click.prevent="anchor('partner-intro')">夥伴介紹</q-btn>
-          <q-btn>聯繫我們</q-btn>
+          <q-btn @click.prevent="anchor('contact-us')">聯繫我們</q-btn>
         </q-toolbar-title>
         <q-btn @click="oppt" icon="fa-solid fa-arrow-left" class="burger-icon" v-if="drawerRight === false" />
         <q-btn @click="oppt" icon="fa-solid fa-arrow-right" class="burger-icon" v-if="drawerRight === true" />
@@ -27,11 +27,26 @@
       <router-view />
     </q-page-container>
 
-    <!-- <q-footer elevated class="bg-grey-8 text-white">
+    <q-footer unelevated class="bg-grey-9 text-white" id="footer">
       <q-toolbar>
-        <div style="margin:auto">我是footer</div>
+        <div class="company-content">
+          地址：新北市泰山區貴子里致遠新村55之1號<br>
+          電話：02 0000 0000<br>
+          客服服務時間：週一至週五 上午8時30分至12時30分，下午1時30分至5時30分<br>
+          <div class="social">
+            <q-btn icon="fa-brands fa-instagram" href="https://www.instagram.com/" unelevated></q-btn>
+            <q-btn icon="fa-brands fa-youtube" href="https://www.youtube.com/" unelevated></q-btn>
+            <q-btn icon="fa-brands fa-github" href="https://www.github.com/" unelevated></q-btn><br>
+          </div>
+        </div>
+        <div class="logo">
+          <q-btn icon="egg" label="友伴" unelevated></q-btn>
+          <div>
+            &copy;泰山職訓前端設計 2023/2/1
+          </div>
+        </div>
       </q-toolbar>
-    </q-footer> -->
+    </q-footer>
 
   </q-layout>
 </template>

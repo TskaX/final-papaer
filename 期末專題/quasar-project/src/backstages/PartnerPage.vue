@@ -11,6 +11,11 @@
         :filter="filter"
         row-key="_id"
       >
+      <template v-slot:body-cell-category="props">
+        <td>
+          <span v-for="category in props.row.category" :key="category">{{ category }}&nbsp;&nbsp;</span>
+        </td>
+      </template>
       <template v-slot:body-cell-pic="props">
         <td>
           <q-img :src="props.row.pic" style="height: 90px"></q-img>
@@ -65,8 +70,8 @@
                 <q-input outlined v-model="form.birth" type="text" :rules="[rules.required]"></q-input>
               </div>
               <div class="col-1"></div>
-              <div class="col-5">個性
-                <q-input outlined v-model="form.personal" type="text" :rules="[rules.required]"></q-input>
+              <div class="col-5">類別
+                <q-select outlined v-model="form.category" :options="options" :rules="[rules.required]" multiple />
               </div>
               <div class="col-5">興趣
                 <q-input outlined v-model="form.hobby" type="text" :rules="[rules.required]"></q-input>
@@ -107,6 +112,7 @@ const rules = {
     return !!value || '欄位必填'
   }
 }
+const options = ['運動', '遊戲', '逛街', '吃飯', '電影']
 
 const form = reactive({
   _id: '',
@@ -118,7 +124,7 @@ const form = reactive({
   birth: '',
   word: '',
   hobby: '',
-  personal: '',
+  category: [],
   pic: undefined,
   dialog: false,
   partner: 1,
@@ -139,7 +145,7 @@ const openDialog = (idx, id) => {
     form.loading = false
     form.word = ''
     form.hobby = ''
-    form.personal = ''
+    form.category = []
   } else {
     form.account = rows[index].account
     form._id = rows[index]._id
@@ -152,7 +158,7 @@ const openDialog = (idx, id) => {
     form.loading = false
     form.word = rows[index].word
     form.hobby = rows[index].hobby
-    form.personal = rows[index].personal
+    form.category = rows[index].category
   }
 }
 
@@ -182,10 +188,9 @@ const columns = reactive([
     field: row => row.phone
   },
   {
-    name: 'personal',
-    label: '個性',
-    align: 'left',
-    field: row => row.personal
+    name: 'category',
+    label: '類別',
+    align: 'left'
   },
   {
     name: 'hobby',
@@ -258,7 +263,9 @@ const submit = async () => {
   fd.append('partner', form.partner)
   fd.append('word', form.word)
   fd.append('hobby', form.hobby)
-  fd.append('personal', form.personal)
+  for (const item of form.category) {
+    fd.append('category', item)
+  }
   try {
     if (form._id.length === 0) {
       const { data } = await apiAuth.post('/users/partner', fd)
@@ -302,6 +309,7 @@ const pagesNumber = computed(() => {
   try {
     const { data } = await apiAuth.get('/backstages/partner')
     rows.push(...data.result)
+    console.log(rows)
   } catch (error) {
     Swal.fire({
       icon: 'error',
