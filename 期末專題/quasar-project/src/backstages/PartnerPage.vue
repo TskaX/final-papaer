@@ -1,7 +1,7 @@
 <template>
   <div id="partner">
     <div class="q-pa-md">
-      <q-btn label="新增夥伴" @click="openDialog(0)" class="add"></q-btn>
+      <q-btn label="新增夥伴" @click="openDialog(0, null)" class="add"></q-btn>
       <q-table
         title="夥伴管理"
         :rows="rows"
@@ -53,18 +53,18 @@
           <q-card-section class="partner-main">
             <div class="row">
               <div class="col-5" v-if="form._id.length === 0">帳號
-                <q-input outlined v-model="form.account" type="text" :rules="[rules.required]"></q-input>
+                <q-input outlined v-model="form.account" type="text" :rules="[rules.required, rules.length]"></q-input>
               </div>
               <div class="col-1" v-if="form._id.length === 0"></div>
               <div class="col-5" v-if="form._id.length === 0">密碼
-                <q-input outlined v-model="form.password" type="text" :rules="[rules.required]"></q-input>
+                <q-input outlined v-model="form.password" type="text" :rules="[rules.required, rules.length]"></q-input>
               </div>
               <div class="col-5">姓名
                 <q-input outlined v-model="form.name" type="text" :rules="[rules.required]"></q-input>
               </div>
               <div class="col-1"></div>
               <div class="col-5">電話
-                <q-input outlined v-model="form.phone" type="text" :rules="[rules.required]"></q-input>
+                <q-input outlined v-model="form.phone" type="text" :rules="[rules.required, rules.phoneLength]"></q-input>
               </div>
               <div class="col-5">生日
                 <q-input outlined v-model="form.birth" type="text" :rules="[rules.required]"></q-input>
@@ -81,7 +81,7 @@
                 <q-input outlined v-model="form.word" type="text" :rules="[rules.required]"></q-input>
               </div>
               <div class="col-11">信箱
-                <q-input outlined v-model="form.email" type="text" :rules="[rules.required]"></q-input>
+                <q-input outlined v-model="form.email" type="text" :rules="[rules.required, rules.email]"></q-input>
               </div>
               <div class="col-11">照片
                 <br>
@@ -102,6 +102,7 @@
 <script setup>
 import { apiAuth } from 'src/boot/axios'
 import Swal from 'sweetalert2'
+import validator from 'validator'
 import { reactive, ref, computed } from 'vue'
 
 const filter = ref('')
@@ -110,8 +111,18 @@ const rows = reactive([])
 const rules = {
   required (value) {
     return !!value || '欄位必填'
+  },
+  email (value) {
+    return validator.isEmail(value) || '格式錯誤'
+  },
+  length (value) {
+    return (value.length >= 4 && value.length <= 16) || '長度為4~16個英數字'
+  },
+  phoneLength (value) {
+    return (value.length === 10 || '手機號碼格式錯誤')
   }
 }
+
 const options = ['運動', '遊戲', '逛街', '吃飯', '電影']
 
 const form = reactive({
@@ -131,7 +142,6 @@ const form = reactive({
   loading: false
 })
 const openDialog = (idx, id) => {
-  const index = rows.findIndex(el => el._id === id)
   if (idx === 0) {
     form.account = ''
     form._id = ''
@@ -147,6 +157,7 @@ const openDialog = (idx, id) => {
     form.hobby = ''
     form.category = []
   } else {
+    const index = rows.findIndex(el => el._id === id)
     form.account = rows[index].account
     form._id = rows[index]._id
     form.name = rows[index].name
@@ -185,7 +196,7 @@ const columns = reactive([
     name: 'phone',
     label: '電話',
     align: 'left',
-    field: row => row.phone
+    field: row => '0' + row.phone
   },
   {
     name: 'category',
@@ -253,6 +264,7 @@ const submit = async () => {
   form.loading = true
 
   const fd = new FormData()
+  fd.append('_id', form._id)
   fd.append('account', form.account)
   fd.append('password', form.password)
   fd.append('name', form.name)
@@ -276,8 +288,9 @@ const submit = async () => {
         text: '新增成功'
       })
     } else {
+      const index = rows.findIndex(el => el._id === form._id)
       const { data } = await apiAuth.patch('/users/partner/' + form._id, fd)
-      rows[form.idx] = data.result
+      rows[index] = data.result
       Swal.fire({
         icon: 'success',
         title: '成功',
@@ -285,11 +298,19 @@ const submit = async () => {
       })
     }
   } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: '失敗',
-      text: '新增/編輯失敗'
-    })
+    if (form._id.length === 0) {
+      Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: '新增失敗'
+      })
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: '編輯失敗'
+      })
+    }
   }
   form.dialog = false
 }
@@ -309,7 +330,6 @@ const pagesNumber = computed(() => {
   try {
     const { data } = await apiAuth.get('/backstages/partner')
     rows.push(...data.result)
-    console.log(rows)
   } catch (error) {
     Swal.fire({
       icon: 'error',

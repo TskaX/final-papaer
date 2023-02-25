@@ -46,8 +46,7 @@ const schema = new Schema({
     type: Number,
     required: [true, '缺少電話'],
     minlength: [10, '電話過短'],
-    maxlength: [10, '電話過長'],
-    unique: true
+    maxlength: [10, '電話過長']
   },
   birth: {
     type: String,

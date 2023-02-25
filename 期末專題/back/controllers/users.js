@@ -86,8 +86,9 @@ export const getUser = async (req, res) => {
 export const editPicture = async (req, res) => {
   try {
     req.user.pic = req.file.path
+    const result = req.user.pic
     await req.user.save()
-    res.status(200).json({ success: true, message: '' })
+    res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
@@ -115,7 +116,7 @@ export const changePassword = async (req, res) => {
 
 export const addPartner = async (req, res) => {
   try {
-    await users.create({
+    const result = await users.create({
       account: req.body.account,
       password: req.body.password,
       email: req.body.email,
@@ -128,12 +129,13 @@ export const addPartner = async (req, res) => {
       hobby: req.body.hobby,
       category: req.body.category
     })
-    res.status(200).json({ success: true, message: '' })
+    res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else if (error.name === 'MongoServerError' && error.code === 11000) {
       res.status(400).json({ success: false, message: '帳號重複' })
+      console.log(error)
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
     }

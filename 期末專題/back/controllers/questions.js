@@ -50,7 +50,7 @@ export const replyContent = async (req, res) => {
     const result = await questions.findByIdAndUpdate(req.params.id, {
       replyContent: req.body.replyContent,
       reply: req.body.reply
-    }, { new: true })
+    }, { new: true }).populate('u_id', 'account phone')
     await req.user.save()
     if (!result) {
       res.status(404).json({ success: false, message: '找不到使用者' })

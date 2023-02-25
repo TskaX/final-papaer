@@ -153,14 +153,17 @@ const submit = async () => {
   try {
     form.date = `${month}月${day}日`
     if (form._id.length === 0) {
-      await apiAuth.post('/backstages/messages', form)
+      const { data } = await apiAuth.post('/backstages/messages', form)
+      rows.push(data.result)
       Swal.fire({
         icon: 'success',
         title: '成功',
         text: '新增消息成功'
       })
     } else {
-      await apiAuth.patch('/backstages/messages/' + form._id, form)
+      const index = rows.findIndex(el => el._id === form._id)
+      const { data } = await apiAuth.patch('/backstages/messages/' + form._id, form)
+      rows[index] = data.result
       Swal.fire({
         icon: 'success',
         title: '成功',
@@ -190,8 +193,10 @@ const openDelete = (id) => {
 }
 
 const deleteMsg = async () => {
+  const index = rows.findIndex(el => el._id === form._id)
   try {
     await apiAuth.patch('/backstages/messagesDelete/' + formDelete._id, formDelete)
+    rows.splice(index, 1)
     Swal.fire({
       icon: 'success',
       title: '成功',

@@ -36,7 +36,7 @@
             >
               {{ col.value }}
             </q-td>
-            <td>
+            <td class="control-btn">
               <q-btn icon="fa-solid fa-pen-to-square" @click="openDialog(props.row._id)" v-if="props.row.done === '確認後，請送出'"></q-btn>
               <q-btn icon="fa-solid fa-trash" @click="openDelete(props.row._id)" v-if="props.row.done === '確認後，請送出'"></q-btn>
             </td>
@@ -88,9 +88,6 @@
         <q-form @submit="submit">
           <q-card-section class="appointment-main">
             <div class="row">
-              <div class="col-12">會員帳號
-                <q-input outlined v-model="form.account" type="text" disable></q-input>
-              </div>
               <div class="col-12">預約日期
                 <q-input outlined v-model="form.date" type="text" :rules="[rules.required]"></q-input>
               </div>
@@ -239,8 +236,10 @@ const openDialog = (id) => {
 
 const submit = async () => {
   try {
+    const index = rows.findIndex(el => el._id === form._id)
     form.done = 1
     await apiAuth.patch('/users/appointment/' + form._id, form)
+    rows[index].done = '預約成功'
     Swal.fire({
       icon: 'success',
       title: '成功',
@@ -259,6 +258,8 @@ const submit = async () => {
 const deleteMsg = async () => {
   try {
     await apiAuth.patch('/backstages/appointmentDelete/' + formDelete._id, formDelete)
+    const index = rows.findIndex(el => el._id === formDelete._id)
+    rows.splice(index, 1)
     Swal.fire({
       icon: 'success',
       title: '成功',

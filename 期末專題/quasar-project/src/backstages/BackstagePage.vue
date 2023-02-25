@@ -48,10 +48,10 @@
               <q-input outlined v-model="form.name" type="text" :rules="[rules.required]"></q-input>
             </div>
             <div class="col-12">信箱
-              <q-input outlined v-model="form.email" type="text" :rules="[rules.required]"></q-input>
+              <q-input outlined v-model="form.email" type="text" :rules="[rules.required, rules.email]"></q-input>
             </div>
             <div class="col-12">電話
-              <q-input outlined v-model="form.phone" type="text" :rules="[rules.required]"></q-input>
+              <q-input outlined v-model="form.phone" type="text" :rules="[rules.required, rules.phoneLength]"></q-input>
             </div>
             <div class="col-12">生日
               <q-input outlined v-model="form.birth" type="text" :rules="[rules.required]"></q-input>
@@ -75,6 +75,7 @@
 import { reactive, ref, computed } from 'vue'
 import { apiAuth } from 'src/boot/axios'
 import Swal from 'sweetalert2'
+import validator from 'validator'
 
 const filter = ref('')
 const rows = reactive([])
@@ -82,6 +83,15 @@ const rows = reactive([])
 const rules = {
   required (value) {
     return !!value || '欄位必填'
+  },
+  email (value) {
+    return validator.isEmail(value) || '格式錯誤'
+  },
+  length (value) {
+    return (value.length >= 4 && value.length <= 16) || '長度為4~16個英數字'
+  },
+  phoneLength (value) {
+    return (value.length === 10 || '手機號碼格式錯誤')
   }
 }
 
@@ -136,6 +146,7 @@ function openDialog (id) {
 }
 
 const submit = async () => {
+  const index = rows.findIndex(el => el._id === form._id)
   form.loading = true
   const fd = new FormData()
   fd.append('name', form.name)
@@ -144,11 +155,12 @@ const submit = async () => {
   fd.append('birth', form.birth)
   fd.append('pic', form.pic)
   try {
-    await apiAuth.patch('/backstages/' + form._id, fd)
+    const { data } = await apiAuth.patch('/backstages/' + form._id, fd)
+    rows[index] = data.result
     Swal.fire({
       icon: 'success',
       title: '成功',
-      text: '發問成功等待回復'
+      text: '修改會員資料成功'
     })
   } catch (error) {
     Swal.fire({

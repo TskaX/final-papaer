@@ -23,10 +23,8 @@
     }
 
     .logo {
-      .q-btn {
-        font-size: 20px;
-        color: $accent;
-      }
+      width: 90px;
+      padding-left: 20px;
     }
 
     .q-btn::before {
@@ -85,10 +83,15 @@
     }
     .logo {
       font-size: 1.1rem;
+      text-align: center;
       .q-btn {
-        font-size: 1.2rem;
+        font-size: 1.8rem;
         color:white;
+        padding: 0;
       }
+    }
+    .disabled * {
+      cursor:default !important;
     }
   }
 }
@@ -118,6 +121,14 @@
       left:5%;
       top:30%;
       opacity: 0;
+    }
+    .sloganC {
+      font-size: 1rem;
+      color: white;
+      position: absolute;
+      left:5%;
+      top:45%;
+      opacity: 1;
     }
   }
 
@@ -222,6 +233,15 @@
       h1 {
         color:$accent;
       }
+      .filter-btn {
+        width: 70vw;
+        margin: auto;
+        .q-btn {
+          margin: 0 20px 3rem 0;
+          background-color: $accent;
+          color:white;
+        }
+      }
 
       .swiper {
         width: 80vw;
@@ -229,13 +249,13 @@
 
         .swiper-button-prev {
           color: teal;
-          top: 40%;
+          top: 25%;
           left: 0%;
         }
 
         .swiper-button-next {
           color: teal;
-          top: 40%;
+          top: 25%;
           right: 0;
         }
 
@@ -246,6 +266,10 @@
 
           .q-card {
             font-size: 0;
+            &:nth-child(1) {
+              width: 300px;
+              height: 499px;
+            }
             .q-card__section {
               background-color: #F8F7DF;
             }
@@ -681,6 +705,39 @@
     }
   }
 }
+.appointmentForm-dialog {
+  .q-card {
+
+    .appointmentForm-title {
+      background-color: $title;
+
+      div {
+        font-size: 1.3rem;
+        color: white;
+      }
+      .q-btn {
+        color: $accent;
+      }
+    }
+
+    .appointmentForm-main {
+      .col {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+    }
+
+    .appointmentForm-btn {
+      padding-top: 0;
+      display: flex;
+      justify-content: space-evenly;
+
+      .q-btn {
+        width: 100px;
+      }
+    }
+  }
+}
 
 #appointment {
   height: calc(100vh - 50px);
@@ -749,6 +806,11 @@
         }
       }
     }
+    .control-btn {
+      .q-btn {
+        margin-right: 10px;
+      }
+    }
   }
 
   .q-pagination {
@@ -763,7 +825,6 @@
 
 .appointment-dialog {
   .q-card {
-    width: 70vw;
 
     .appointment-title {
       background-color: $title;
@@ -795,7 +856,6 @@
 
 .deleteAppointment-dialog {
   .q-card {
-    width: 20vw;
 
     .deleteAppointment-title {
       background-color: $title;
@@ -810,9 +870,11 @@
       padding-top: 20px;
       display: flex;
       justify-content: space-evenly;
+      
 
       .q-btn {
         width: 100px;
+        margin: 0 10px ;
       }
     }
   }
@@ -1732,12 +1794,15 @@
 @media (min-width: $breakpoint-sm-min) {
   #front-layout {
     .q-header {
-      padding-left: calc(1rem + 10vw);
+      padding-left: calc(1rem + 5vw);
       .q-toolbar__title {
-        padding-right: calc(1rem + 10vw);
+        padding-right: calc(1rem + 5vw);
         .q-btn {
           font-size: 1.2rem;
         }
+      }
+      .logo {
+        width: 90px;
       }
     }
     #footer {
@@ -1757,6 +1822,11 @@
         font-size: calc(2rem + 2vw);
         left:5%;
         top:35%;
+      }
+      .sloganC {
+        font-size: calc(1rem + 2vw);
+        left:5%;
+        top:55%;
       }
     }
     #about-us {
@@ -1851,6 +1921,9 @@
       }
     }
   }
+  .q-dialog__inner--minimized>div {
+    max-width: 560px !important;
+  }
 }
 
 @media (min-width: $breakpoint-md-min) {
@@ -1861,7 +1934,7 @@
         font-size: 1.2rem;
         flex-direction: row-reverse;
         .company-content {
-          padding-top: 4rem;
+          padding-top: 1.8rem;
         }
       }
       .social {
@@ -1875,9 +1948,8 @@
         font-size: 1.2rem;
         justify-content: center;
         text-align: center;
-        .q-btn {
-          font-size: 2.5rem;
-          color:white;
+        .q-img {
+          margin-bottom: 10px;
         }
       }
     }
@@ -1902,6 +1974,11 @@
         font-size: calc(3rem + 2vw);
         left:5%;
         top:30%;
+      }
+      .sloganC {
+        font-size: calc(1.5rem + 2vw);
+        left:5%;
+        top:50%;
       }
     }
 
@@ -2041,6 +2118,11 @@
         font-size: 5rem;
         left:5%;
         top:22%;
+      }
+      .sloganC {
+        font-size: 4rem;
+        left:5%;
+        top:40%;
       }
     }
     #about-us {

@@ -108,7 +108,8 @@ const submit = async () => {
   fd.append('pic', form.pic)
 
   try {
-    await apiAuth.patch('/users', fd)
+    const { data } = await apiAuth.patch('/users', fd)
+    user.pic = data.result
     Swal.fire({
       icon: 'success',
       title: '成功',

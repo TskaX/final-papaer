@@ -13,6 +13,13 @@
         :filter="filter"
         row-key="_id"
       >
+      <template v-slot:top-right>
+        <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
       <template v-slot:body-cell-button="props">
         <td>
           <q-btn icon="fa-solid fa-pen-to-square" @click="openDialog(props.row._id)" v-if="props.row.done !== '已完成'"></q-btn>
@@ -39,6 +46,13 @@
         :filter="filter"
         row-key="_id"
       >
+      <template v-slot:top-right>
+        <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
       <template v-slot:body-cell-button="props">
         <td>
           <q-btn icon="fa-solid fa-pen-to-square" @click="openDialog2(props.row._id)" v-if="props.row.done !=='已完成'"></q-btn>
@@ -65,6 +79,13 @@
         :filter="filter"
         row-key="_id"
       >
+      <template v-slot:top-right>
+        <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
       <template v-slot:body-cell-button="props">
         <td>
           <q-btn icon="fa-solid fa-pen-to-square" @click="openReply(props.row._id)"></q-btn>
@@ -233,6 +254,7 @@ const changeWordToday = () => {
     }
   }
 }
+
 const changeWordAll = () => {
   for (let i = 0; i <= rows2.length - 1; i++) {
     if (rows2[i].done === 1) {
@@ -424,7 +446,12 @@ const openReply = (id) => {
 
 const submit = async () => {
   try {
-    await apiAuth.patch('/backstages/appointment/' + form._id, form)
+    const index = rows.findIndex(el => el._id === form._id)
+    const index2 = rows2.findIndex(el => el._id === form._id)
+    const { data } = await apiAuth.patch('/backstages/appointment/' + form._id, form)
+    rows[index] = data.result
+    rows2[index2] = data.result
+    changeWordAll()
     Swal.fire({
       icon: 'success',
       title: '成功',
@@ -441,8 +468,12 @@ const submit = async () => {
 }
 
 const deleteMsg = async () => {
+  const index = rows.findIndex(el => el._id === formDelete._id)
+  const index2 = rows2.findIndex(el => el._id === formDelete._id)
   try {
     await apiAuth.patch('/backstages/appointmentDelete/' + formDelete._id, formDelete)
+    rows.splice(index, 1)
+    rows2.splice(index2, 1)
     Swal.fire({
       icon: 'success',
       title: '成功',
@@ -459,8 +490,11 @@ const deleteMsg = async () => {
 }
 
 const submitReply = async () => {
+  const index3 = rows3.findIndex(el => el._id === formReply._id)
   try {
-    await apiAuth.patch('/backstages/editReply/' + formReply._id, formReply)
+    const { data } = await apiAuth.patch('/backstages/editReply/' + formReply._id, formReply)
+    rows3[index3].u_reply = data.result.u_reply
+    rows3[index3].p_reply = data.result.p_reply
     Swal.fire({
       icon: 'success',
       title: '成功',
@@ -488,9 +522,9 @@ const submitReply = async () => {
     rows2.push(...all.result)
     rows3.push(...replyCheck.result)
     rows3 = rows3.filter(el => el.done === 2)
-    console.log(rows3)
     changeWordToday()
     changeWordAll()
+    console.log(rows3)
   } catch (error) {
     Swal.fire({
       icon: 'error',

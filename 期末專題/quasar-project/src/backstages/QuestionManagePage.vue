@@ -152,7 +152,9 @@ const submit = async (idx) => {
   const index = rows.findIndex(el => el._id === idx)
   rows[index].reply = 1
   try {
-    await apiAuth.post('/questions/replyContent/' + rows[index]._id, { replyContent: rows[index].replyContent, reply: rows[index].reply })
+    const { data } = await apiAuth.post('/questions/replyContent/' + rows[index]._id, { replyContent: rows[index].replyContent, reply: rows[index].reply })
+    rows.splice(index, 1)
+    rows2.unshift(data.result)
     Swal.fire({
       icon: 'success',
       title: '成功',
@@ -235,6 +237,7 @@ const pagesNumber2 = computed(() => {
     done.result.reverse()
     rows.push(...none.result)
     rows2.push(...done.result)
+    console.log(rows)
   } catch (error) {
     Swal.fire({
       icon: 'error',

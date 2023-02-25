@@ -3,7 +3,7 @@
     <q-header elevated class="text-black" height-hint="98">
       <q-toolbar>
         <div class="logo">
-          <q-btn icon="egg" to="/" label="友伴"></q-btn>
+          <q-img src="../assets/logo6.png"></q-img>
         </div>
         <q-toolbar-title>
           <q-btn @click.prevent="anchor('about-us')">關於我們</q-btn>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="logo">
-          <q-btn icon="egg" label="友伴" unelevated></q-btn>
+          <q-img src="../assets/logo6.png"></q-img>
           <div>
             &copy;泰山職訓前端設計 2023/2/1
           </div>

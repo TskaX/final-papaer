@@ -6,6 +6,7 @@
       </video>
       <div class="sloganA"></div>
       <div class="sloganB"></div>
+      <div class="sloganC">尋找一份簡單的陪伴</div>
     </div>
     <div id="about-us">
       <h1>關於我們</h1>
@@ -43,12 +44,14 @@
     <div id="partner-intro">
       <div class="container">
         <h1>夥伴介紹</h1>
-        <q-btn label="全部" @click="changeCategory('all')"></q-btn>
-        <q-btn label="運動" @click="changeCategory('sport')"></q-btn>
-        <q-btn label="遊戲" @click="changeCategory('game')"></q-btn>
-        <q-btn label="吃飯" @click="changeCategory('eat')"></q-btn>
-        <q-btn label="電影" @click="changeCategory('movie')"></q-btn>
-        <q-btn label="逛街" @click="changeCategory('shopping')"></q-btn>
+        <div class="filter-btn">
+          <q-btn label="全部" @click="changeCategory('all')"></q-btn>
+          <q-btn label="運動" @click="changeCategory('sport')"></q-btn>
+          <q-btn label="遊戲" @click="changeCategory('game')"></q-btn>
+          <q-btn label="吃飯" @click="changeCategory('eat')"></q-btn>
+          <q-btn label="電影" @click="changeCategory('movie')"></q-btn>
+          <q-btn label="逛街" @click="changeCategory('shopping')"></q-btn>
+        </div>
         <swiper slides-per-view="1" :spaceBetween="30" :loop="true" :navigation="true" :observer="true"  :breakpoints="{
           600: {
             slidesPerView: 1,
@@ -86,9 +89,12 @@
           </swiper-slide>
         </swiper>
       </div>
-      <q-dialog v-model="form.dialog">
+      <q-dialog v-model="form.dialog" class="appointmentForm-dialog">
         <q-card>
-          <q-card-section>
+          <q-card-section class="appointmentForm-title">
+            <div>預約表單</div>
+          </q-card-section>
+          <q-card-section class="appointmentForm-main">
             <div class="row justify-center">
               <div class="col-5">
                 <span>日期</span>
@@ -109,7 +115,7 @@
               <div class="col-1"></div>
               <div class="col-5">
                 <span>時間</span>
-                <q-select color="teal" filled v-model="time" :options="options" label="Time" :rules="[rules.required]">
+                <q-select color="teal" filled v-model="time" :options="options" label="Time" :rules="[rules.required] " lazy-rules>
                   <template v-slot:prepend>
                     <q-icon name="event" />
                   </template>
@@ -122,11 +128,11 @@
               <div class="col-1"></div>
               <div class="col-5">
                 <span>地點</span>
-                <q-input outlined v-model="form.place" :rules="[rules.required]"></q-input>
+                <q-input outlined v-model="form.place" :rules="[rules.required]" lazy-rules></q-input>
               </div>
             </div>
           </q-card-section>
-          <q-card-section style="text-align:center">
+          <q-card-section class="appointmentForm-btn">
             <q-btn label="確認" @click="submit"></q-btn>
             <q-btn label="取消" v-close-popup></q-btn>
           </q-card-section>
@@ -288,11 +294,19 @@ const submit = async () => {
     })
     router.push('/appointment')
   } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: '預約失敗',
-      text: '請聯絡客服，協助進行處理'
-    })
+    if (form.time === '' || form.place === '') {
+      Swal.fire({
+        icon: 'error',
+        title: '預約失敗',
+        text: '有內容尚未填寫'
+      })
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: '預約失敗',
+        text: '請聯絡客服，協助進行處理'
+      })
+    }
   }
 }
 
