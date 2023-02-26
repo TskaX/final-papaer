@@ -196,9 +196,11 @@ const openFinish = (id) => {
 }
 
 const finishAppointment = async () => {
+  const index = rows.findIndex(el => el._id === formDone._id)
   try {
     formDone.done = 2
     await apiAuth.patch('/users/finishAppointment/' + formDone._id, formDone)
+    rows[index].done = '已結束'
     Swal.fire({
       icon: 'success',
       title: '成功',

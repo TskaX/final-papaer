@@ -182,21 +182,28 @@ export const getAllPartner = async (req, res) => {
 
 export const addAppointment = async (req, res) => {
   try {
-    await appointments.create({
-      account: req.body.account,
-      name: req.body.name,
-      phone: req.body.phone,
-      email: req.body.email,
-      date: req.body.date,
-      time: req.body.time,
-      p_name: req.body.p_name,
-      place: req.body.place,
-      u_id: req.user._id,
-      p_pic: req.body.p_pic,
-      p_id: req.body.p_id,
-      u_pic: req.user.pic
-    })
-    res.status(200).json({ success: true, message: '' })
+    const data = await appointments.find()
+    const data2 = data.filter(el => el.date === req.body.date && el.time === req.body.time && el.p_id.toString() === req.body.p_id.toString())
+    if(data2.length > 0) {
+      const result = '預約時間重複'
+      res.status(200).json({success: true, message: '預約時間重複', result})
+    } else {
+      await appointments.create({
+        account: req.body.account,
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        date: req.body.date,
+        time: req.body.time,
+        p_name: req.body.p_name,
+        place: req.body.place,
+        u_id: req.user._id,
+        p_pic: req.body.p_pic,
+        p_id: req.body.p_id,
+        u_pic: req.user.pic
+      })
+      res.status(200).json({ success: true, message: '' })
+    }
   } catch (error) {
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })

@@ -19,6 +19,9 @@
 
       .q-btn {
         color: $accent;
+        &:hover {
+          background-color: transparent;
+        }
       }
     }
 
@@ -159,10 +162,15 @@
       font-weight: 400;
       margin: 40px 0 10px 0;
     }
+    .row {
+      height: 70%;
+    }
     .left {
       margin: auto;
+      height: 50%;
       width: 83vw;
       .q-card {
+        height: 100%;
         box-shadow: none;
         border:1px solid $secondary;
         .q-card__section {
@@ -173,6 +181,10 @@
           font-size: 20px;
           padding: 16px;
         }
+        .q-card__section:nth-child(2) {
+          height: 80%;
+          overflow: auto;
+        }
         .content {
           font-size: 1rem;
           padding: 0 20px;
@@ -181,6 +193,7 @@
     }
     .right {
       width: 90vw;
+      height: 50%;
       margin: 30px auto 0;
       .q-table__card {
         box-shadow: none;
@@ -218,13 +231,11 @@
     background-color: $secondary;
     width: 100vw;
     height: 100vh;
-    padding: 20px solid black;
 
     h1 {
       font-family: 'Noto Sans TC', sans-serif;
       font-weight: 400;
       font-size: 2.5rem;
-      padding-top: 30px;
     }
 
     .container {
@@ -237,14 +248,14 @@
         width: 70vw;
         margin: auto;
         .q-btn {
-          margin: 0 20px 3rem 0;
+          margin: 0 20px 1rem 0;
           background-color: $accent;
           color:white;
         }
       }
 
       .swiper {
-        width: 80vw;
+        width: 92vw;
         height: calc(100vh - 96px);
 
         .swiper-button-prev {
@@ -268,7 +279,6 @@
             font-size: 0;
             &:nth-child(1) {
               width: 300px;
-              height: 499px;
             }
             .q-card__section {
               background-color: #F8F7DF;
@@ -280,6 +290,7 @@
               box-shadow:
               5px 5px 5px rgb(205,215,204),
               10px 10px 15px rgba(205,215,204,0.7);
+              transform: translateY(50px);
             }
 
             .worker-pic {
@@ -327,6 +338,7 @@
   #contact-us {
     background: url(../assets/bg.jpg) center/cover;
     background-attachment:fixed;
+    background-position-y: -100px;
     height: 50vh;
     width: 100vw;
     display: flex;
@@ -358,6 +370,9 @@
       }
     }
   }
+}
+.top {
+  top:-15%;
 }
 
 #register {
@@ -1834,6 +1849,22 @@
         margin: 50px auto 0;
       }
     }
+
+    #partner-intro {
+      .container {
+        .filter-btn {
+          .q-btn {
+            margin: 0 20px 3rem 0;
+            background-color: $accent;
+            color:white;
+          }
+        }
+      }
+    }
+
+    #contact-us {
+      background-position-y: -50px;
+    }
   }
   #register {
     .contain {
@@ -1924,6 +1955,9 @@
   .q-dialog__inner--minimized>div {
     max-width: 560px !important;
   }
+  .top {
+    top:0%;
+  }
 }
 
 @media (min-width: $breakpoint-md-min) {
@@ -1986,6 +2020,12 @@
       h1 {
         font-size: 3.5rem;
         margin-top: 40px;
+      }
+      .left {
+        height: 55%;
+        .q-card {
+          margin-top: 30px;
+        }
       }
       .right {
         margin: 80px auto 0;

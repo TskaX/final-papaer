@@ -3,15 +3,14 @@
     <q-header elevated class="text-black" height-hint="98">
       <q-toolbar>
         <div class="logo">
-          <q-img src="../assets/logo6.png"></q-img>
+          <q-img src="../assets/logo.png"></q-img>
         </div>
         <q-toolbar-title>
           <q-btn @click.prevent="anchor('about-us')">關於我們</q-btn>
           <q-btn @click.prevent="anchor('partner-intro')">夥伴介紹</q-btn>
           <q-btn @click.prevent="anchor('contact-us')">聯繫我們</q-btn>
         </q-toolbar-title>
-        <q-btn @click="oppt" icon="fa-solid fa-arrow-left" class="burger-icon" v-if="drawerRight === false" />
-        <q-btn @click="oppt" icon="fa-solid fa-arrow-right" class="burger-icon" v-if="drawerRight === true" />
+        <q-btn @click="oppt" icon="menu" id="burger-icon" unelevated rounded  v-model="drawerRight"/>
       </q-toolbar>
       <div class="side-nav">
         <div v-if="isLogin">Hi，{{ user.name }}</div>
@@ -40,7 +39,7 @@
           </div>
         </div>
         <div class="logo">
-          <q-img src="../assets/logo6.png"></q-img>
+          <q-img src="../assets/logo.png"></q-img>
           <div>
             &copy;泰山職訓前端設計 2023/2/1
           </div>
@@ -55,6 +54,7 @@
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '../stores/store'
 import { ref } from 'vue'
+import { gsap } from 'gsap'
 
 const user = useUserStore()
 const { isLogin, isAdmin } = storeToRefs(user)
@@ -74,9 +74,17 @@ const oppt = () => {
   if (drawerRight.value === true) {
     sideNav.style.cssText = 'display: none'
     drawerRight.value = false
+    gsap.to('#burger-icon', {
+      rotate: '180deg',
+      duration: '0.5'
+    })
   } else {
     sideNav.style.cssText = 'display: block'
     drawerRight.value = true
+    gsap.to('#burger-icon', {
+      rotate: '-180deg',
+      duration: '0.5'
+    })
   }
 }
 </script>

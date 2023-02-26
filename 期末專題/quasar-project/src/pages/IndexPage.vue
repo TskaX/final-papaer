@@ -142,11 +142,14 @@
     <div id="contact-us">
       <div class="question">
         <h1>聯繫我們</h1>
-        <q-input label="電子信箱" outlined></q-input>
-        <q-input label="問題描述" outlined></q-input>
-        <q-btn dense unelevated type="submit" label="送出"></q-btn>
+        <q-input label="電子信箱" outlined v-model="formFeedback.email"></q-input>
+        <q-input label="問題描述" outlined v-model="formFeedback.content"></q-input>
+        <q-btn dense unelevated type="submit" label="送出" @click="alert"></q-btn>
       </div>
     </div>
+    <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]" style="z-index: 999;">
+      <q-btn fab icon="keyboard_arrow_up" color="accent" />
+    </q-page-scroller>
   </q-page>
 </template>
 
@@ -178,6 +181,22 @@ const rules = {
   required (value) {
     return !!value || '欄位必填'
   }
+}
+
+const formFeedback = reactive({
+  email: '',
+  content: ''
+})
+
+const alert = () => {
+  Swal.fire({
+    icon: 'success',
+    title: '成功',
+    text: '謝謝您的意見，我們會予以參考並繼續進步',
+    customClass: {
+      popup: 'top'
+    }
+  })
 }
 
 const columns = reactive([
@@ -286,13 +305,21 @@ const submit = async () => {
   form.email = user.email
   form.dialog = false
   try {
-    await apiAuth.post('/users/appointment', form)
-    Swal.fire({
-      icon: 'success',
-      title: '預約成功',
-      text: '確認預約資料無誤後，麻煩送出預約'
-    })
-    router.push('/appointment')
+    const { data } = await apiAuth.post('/users/appointment', form)
+    if (data.message === '預約時間重複') {
+      Swal.fire({
+        icon: 'error',
+        title: '預約失敗',
+        text: '不好意思，該時段已被預約，請重新選取'
+      })
+    } else {
+      Swal.fire({
+        icon: 'success',
+        title: '預約成功',
+        text: '確認預約資料無誤後，麻煩送出預約'
+      })
+      router.push('/appointment')
+    }
   } catch (error) {
     if (form.time === '' || form.place === '') {
       Swal.fire({
